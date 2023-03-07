@@ -1,9 +1,9 @@
 <?php 
 // Database configuration
 $dbHost     = "us-cdbr-east-06.cleardb.net";
-$dbUsername = "bf7ca6f7d79144";
-$dbPassword = "f2eef79d";
-$dbName     = "heroku_38d47f0bebcb01b";
+$dbUsername = "b8d1c92e38d8f9";
+$dbPassword = "779c12a8";
+$dbName     = "heroku_23a5f73e18d7315";
 
 // Create database connection
 $conn = new mysqli($dbHost, $dbUsername, $dbPassword, $dbName);
