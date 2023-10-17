@@ -1,30 +1,27 @@
 <nav class="sb-topnav navbar navbar-expand navbar-light bg-white shadow-sm">
     <a class="navbar-brand" href=""><img alt="logo" src="img/esolace logo.png"></a>
-    <button class="btn btn-link btn-sm order-1 order-lg-0" id="sidebarToggle" href="#"><i
-            class="fas fa-bars"></i></button>
+    <button class="btn btn-link btn-sm order-1 order-lg-0" id="sidebarToggle" href="#"><i class="fas fa-bars"></i></button>
     <!-- Navbar-->
     <ul class="navbar-nav  d-flex justify-content-end w-100  ">
-        <?php if ($_SESSION['user_access'] == "Employee") {?>
-        <li class="nav-item dropdown no-arrow mx-1 osahan-list-dropdown">
-            <a class="nav-link dropdown-toggle" href="#" role="button" data-toggle="dropdown" aria-haspopup="true"
-                aria-expanded="false">
-                <i class="feather-bell"></i>
-                <!-- Counter - Alerts -->
-                <span class="badge badge-danger badge-counter" id="notification_count"></span>
-            </a>
-            <!-- Dropdown - Alerts -->
-            <div class="dropdown-list dropdown-menu dropdown-menu-right shadow-sm" id="notification">
-                <h6 class="dropdown-header">
-                    Alerts Center
-                </h6>
+        <?php if ($_SESSION['user_access'] == "Employee") { ?>
+            <li class="nav-item dropdown no-arrow mx-1 osahan-list-dropdown">
+                <a class="nav-link dropdown-toggle" href="#" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                    <i class="feather-bell"></i>
+                    <!-- Counter - Alerts -->
+                    <span class="badge badge-danger badge-counter" id="notification_count"></span>
+                </a>
+                <!-- Dropdown - Alerts -->
+                <div class="dropdown-list dropdown-menu dropdown-menu-right shadow-sm" id="notification">
+                    <h6 class="dropdown-header">
+                        Alerts Center
+                    </h6>
 
-            </div>
-        </li>
-        <?php }?>
+                </div>
+            </li>
+        <?php } ?>
         <!-- Nav Item - User Information -->
         <li class="nav-item dropdown no-arrow ml-1 osahan-profile-dropdown ">
-            <a class="nav-link dropdown-toggle pr-0" href="#" role="button" data-toggle="dropdown" aria-haspopup="true"
-                aria-expanded="false">
+            <a class="nav-link dropdown-toggle pr-0" href="#" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                 <img class="img-profile rounded-circle user_image" src="img/user/1.png">
             </a>
             <!-- Dropdown - User Information -->
@@ -40,8 +37,7 @@
                     </div>
                 </div>
                 <div class="dropdown-divider"></div>
-                <button class="btn dropdown-item" id="change_password" type="button" data-toggle="modal"
-                    data-target="#exampleModal"><i class="feather-lock mr-1"></i>Change
+                <button class="btn dropdown-item" id="change_password" type="button" data-toggle="modal" data-target="#exampleModal"><i class="feather-lock mr-1"></i>Change
                     Password</button>
                 <button class="dropdown-item" id="logout"><i class="feather-log-out mr-1"></i> Logout</button>
             </div>
@@ -78,8 +74,7 @@
                             </div>
                             <div class="form-group row">
                                 <label class="col-3 text-right" for="inputPasswordNewVerify">Confirm Password</label>
-                                <input type="password" class="col-6 form-control" id="inputPasswordNewVerify"
-                                    required="">
+                                <input type="password" class="col-6 form-control" id="inputPasswordNewVerify" required="">
                             </div>
                         </form>
                     </div>
@@ -117,39 +112,58 @@
 
 
 <script>
-let user_id = '<?php echo $_SESSION['user_id'] ?>';
-$(document).ready(function() {
-    $('#alert').on('hidden.bs.modal', function() {
-        // refresh current page
-        location.reload();
+    let user_id = '<?php echo $_SESSION['user_id'] ?>';
+    $(document).ready(function() {
+        $('#alert').on('hidden.bs.modal', function() {
+            // refresh current page
+            location.reload();
+        })
     })
-})
+    let user_images = document.getElementsByClassName("user_image");
 
-let user_image = document.getElementsByClassName("user_image");
-for (i = 0; i < user_image.length; i++) {
-    user_image[i].src = "include/" + '<?php echo $_SESSION['user_image'] ?>';
-}
-
-let logout = document.getElementById('logout');
-logout.addEventListener('click', function() {
-    logout();
-});
-let save_btn = document.getElementById('save_btn');
-save_btn.addEventListener('click', function() {
-    let inputPasswordOld = document.getElementById('inputPasswordOld').value;
-    let inputPasswordNew = document.getElementById('inputPasswordNew').value;
-    let inputPasswordNewVerify = document.getElementById('inputPasswordNewVerify').value;
-    if (inputPasswordNew == inputPasswordNewVerify) {
-        change_password(inputPasswordOld, inputPasswordNew, user_id);
-
-    } else {
-        alert("New Password and Verify Password is not same");
+    for (let i = 0; i < user_images.length; i++) {
+        <?php if ($_SESSION['user_access'] == "Employee") { ?>
+            user_images[i].src = "include/<?php echo $_SESSION['user_image']; ?>";
+        <?php } else { ?>
+            user_images[i].src = "img/user123.png";
+        <?php } ?>
     }
-});
-<?php
-if ($_SESSION['user_access'] == "Employee") {?> $(document).ready(function() {
-    let user_id = "<?php echo $_SESSION['user_id'] ?>";
-    get_alert(user_id);
-});
-<?php }?>
+
+    document.addEventListener('DOMContentLoaded', function() {
+        const logout = document.getElementById('logout');
+
+        logout.addEventListener('click', function() {
+            logoutf();
+        });
+
+        function logoutf() {
+            // // Clear local storage
+            // localStorage.clear();
+
+            // Clear session storage
+            sessionStorage.clear();
+
+            // Redirect the user to index.php
+            window.location.href = 'login.php';
+        }
+    });
+
+    let save_btn = document.getElementById('save_btn');
+    save_btn.addEventListener('click', function() {
+        let inputPasswordOld = document.getElementById('inputPasswordOld').value;
+        let inputPasswordNew = document.getElementById('inputPasswordNew').value;
+        let inputPasswordNewVerify = document.getElementById('inputPasswordNewVerify').value;
+        if (inputPasswordNew == inputPasswordNewVerify) {
+            change_password(inputPasswordOld, inputPasswordNew, user_id);
+
+        } else {
+            alert("New Password and Verify Password is not same");
+        }
+    });
+    <?php
+    if ($_SESSION['user_access'] == "Employee") { ?> $(document).ready(function() {
+            let user_id = "<?php echo $_SESSION['user_id'] ?>";
+            get_alert(user_id);
+        });
+    <?php } ?>
 </script>

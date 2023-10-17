@@ -2,7 +2,7 @@
 $hostname     = "localhost";
 $username     = "root";
 $password     = "";
-$databasename = "attendance system";
+$databasename = "attendance_system_database";
 // Create connection
 $conn = mysqli_connect($hostname, $username, $password,$databasename);
 $db=$conn;

@@ -15,7 +15,7 @@ if (isset($_SESSION['status']) && $_SESSION['user_access'] == 'Employee') {
                 <li class="breadcrumb-item"><a href="dashboard.php">Dashboard</a></li>
             </ol>
             <div class="row">
-                <div class="col-12 col-md-5 col-lg-2 mt-2">
+                <div class="col-12 col-md-5 col-lg-4 mt-2">
                     <div class="card bg-primary text-white">
                         <div class="card-body"><span class="h5">My Profile</span>
                         </div>
@@ -25,7 +25,7 @@ if (isset($_SESSION['status']) && $_SESSION['user_access'] == 'Employee') {
                         </div>
                     </div>
                 </div>
-                <div class="col-12 col-md-5 col-lg-2 mt-2">
+                <div class="col-12 col-md-5 col-lg-4 mt-2">
                     <div class="card bg-warning text-white">
                         <div class="card-body"><span class="h5">Leaves</span>
                         </div>
@@ -35,7 +35,7 @@ if (isset($_SESSION['status']) && $_SESSION['user_access'] == 'Employee') {
                         </div>
                     </div>
                 </div>
-                <div class="col-12 col-md-5 col-lg-2 mt-2 ">
+                <div class="col-12 col-md-5 col-lg-4 mt-2 ">
                     <div class="card bg-success text-white">
                         <div class="card-body"><span class="h5">Apply for Leave</span>
                         </div>
@@ -45,7 +45,7 @@ if (isset($_SESSION['status']) && $_SESSION['user_access'] == 'Employee') {
                         </div>
                     </div>
                 </div>
-                <div class="col-12 col-md-5 col-lg-2 mt-2">
+                <div class="col-12 col-md-5 col-lg-4 mt-2">
                     <div class="card bg-danger text-white">
                         <div class="card-body"><span class="h5">Attendance</span>
                         </div>
@@ -55,7 +55,7 @@ if (isset($_SESSION['status']) && $_SESSION['user_access'] == 'Employee') {
                         </div>
                     </div>
                 </div>
-                <div class="col-12 col-md-5 col-lg-2 mt-2">
+                <div class="col-12 col-md-5 col-lg-4 mt-2">
                     <div class="card bg-info text-white">
                         <div class="card-body"><span class="h5">Attendance Report</span>
                         </div>
@@ -66,7 +66,7 @@ if (isset($_SESSION['status']) && $_SESSION['user_access'] == 'Employee') {
                         </div>
                     </div>
                 </div>
-                <div class="col-12 col-md-5 col-lg-2 mt-2">
+                <div class="col-12 col-md-5 col-lg-4 mt-2">
                     <div class="card bg-warning text-white">
                         <div class="card-body"><span class="h5">Apply for Adjustment</span>
                         </div>

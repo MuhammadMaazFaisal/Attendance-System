@@ -213,6 +213,7 @@ function get_leave_data(date) {
             date: date
         },
         success: function (data) {
+            
             data = JSON.parse(data);
             if (data.length > 1) {
                 for (i = 0; i < data.length; i++) {
@@ -852,6 +853,50 @@ function get_employees_by_department(department) {
     });
 }
 
+function get_all_employees() {
+    $.ajax({
+        url: "include/functions.php",
+        method: "POST",
+        data: {
+            action: "get_all_employees",
+        },
+        success: function (data) {
+            data = JSON.parse(data);
+            let tbody = document.getElementById("tbody");
+            tbody.innerHTML = "";
+            for (let i = 0; i < data.length; i++) {
+                let tr = document.createElement("tr");
+                let td1 = document.createElement("td");
+                let td2 = document.createElement("td");
+                let td3 = document.createElement("td");
+                let td4 = document.createElement("td");
+                let td5 = document.createElement("td");
+                let view_btn = document.createElement("button");
+                td1.innerHTML = data[i].user_id;
+                td2.innerHTML = data[i].employee_name;
+                td3.innerHTML = data[i].department;
+                td5.innerHTML = data[i].user_status;
+                view_btn.innerHTML = "View";
+                view_btn.className = "btn btn-primary";
+                view_btn.setAttribute("data-toggle", "modal");
+                view_btn.setAttribute("data-target", "#user_info");
+                view_btn.setAttribute("id", data[i].user_id);
+                view_btn.setAttribute("onclick", "view_user(this.id)");
+                td4.appendChild(view_btn);
+                tr.appendChild(td1);
+                tr.appendChild(td2);
+                tr.appendChild(td3);
+                tr.appendChild(td5);
+                tr.appendChild(td4);
+                tbody.appendChild(tr);
+            }
+        }
+    });
+}
+
+
+
+
 function load_edit_user_page() {
     $.ajax({
         url: "include/functions.php",
@@ -860,6 +905,7 @@ function load_edit_user_page() {
             action: "get_employee_data"
         },
         success: function (data) {
+            console.log(data);
             let employee_name = JSON.parse(data);
             for (let i = 0; i < employee_name.length; i++) {
                 let option = document.createElement("option");
@@ -872,6 +918,7 @@ function load_edit_user_page() {
 }
 
 function edit_user(form) {
+    console.log("form",form);
     $.ajax({
         url: "include/functions.php",
         type: "POST",
@@ -880,9 +927,9 @@ function edit_user(form) {
         data: form,
         success: function (data) {
             alert(data);
-            if (data == "Employee details updated successfully") {
-                window.location.href = "all_users.php";
-            }
+            // if (data == "Employee details updated successfully") {
+            //     window.location.href = "all_users.php";
+            // }
         }
     })
 }
@@ -890,6 +937,7 @@ function edit_user(form) {
 function edit_user_details(drop_down) {
 
     let employee_name = document.getElementById("employee_name");
+    let user_id = document.getElementById("user_id")
     let gender = document.getElementById("gender");
     let designation = document.getElementById("designation");
     let department = document.getElementById("department");
@@ -907,6 +955,9 @@ function edit_user_details(drop_down) {
     let user_shift = document.getElementById("user_shift");
     let time_in = document.getElementById("time_in");
     let time_out = document.getElementById("time_out");
+    
+    // let barcode = document.getElementById("barcode");
+
     $.ajax({
         url: "include/functions.php",
         type: "POST",
@@ -915,9 +966,12 @@ function edit_user_details(drop_down) {
             employee_id: drop_down.value
         },
         success: function (result) {
+            
             let data = JSON.parse(result);
-            user_id = data[0].user_id;
+            console.log(data);
+            console.log("dfsf");
             employee_name.value = data[0].employee_name;
+            user_id.value = data[0].user_id;
             gender.value = data[0].gender;
             designation.value = data[0].designation;
             department.value = data[0].department;
@@ -935,6 +989,8 @@ function edit_user_details(drop_down) {
             user_shift.value = data[0].user_shift;
             time_in.value = data[0].time_in;
             time_out.value = data[0].time_out;
+           
+            // barcode.value = data[0].barcode;
             let form = document.getElementById("form");
             form.classList.remove("invisible");
             get_designation(department.value);
@@ -1043,6 +1099,7 @@ function calendar(user_id, month1, year1) {
 
 function load_my_profile_page(emp) {
     let employee_name = document.getElementById("employee_name");
+    let user_id = document.getElementById("user_id");
     let gender = document.getElementById("gender");
     let designation = document.getElementById("designation");
     let department = document.getElementById("department");
@@ -1064,8 +1121,11 @@ function load_my_profile_page(emp) {
             employee_id: emp
         },
         success: function (data) {
+            console.log(data);
             data = JSON.parse(data);
+            
             employee_name.value = data[0].employee_name;
+            user_id.value = data[0].user_id;
             gender.value = data[0].gender;
             designation.value = data[0].designation;
             department.value = data[0].department;
@@ -1482,6 +1542,7 @@ function get_attendance_data(user_id, month1, year1) {
 }
 
 function get_alert(user_id) {
+    
     $.ajax({
         type: "Post",
         url: "include/functions.php",
@@ -1491,6 +1552,7 @@ function get_alert(user_id) {
         },
         success: function (data) {
             data = JSON.parse(data);
+            console.log('Alert Data', data);
             let notification_count = document.getElementById("notification_count");
             let notification = document.getElementById("notification");
             notification_count.innerHTML = data[0];
@@ -1543,6 +1605,7 @@ function get_alert(user_id) {
     });
 }
 
+
 function alert_modal(id) {
     $.ajax({
         type: "Post",
@@ -1590,6 +1653,7 @@ function get_all_alerts() {
             "action": "get_all_alerts"
         },
         success: function (data) {
+            console.log(data);
             let alerts = JSON.parse(data);
             if (alerts.length == 0) {
                 let tr = document.createElement("tr");
@@ -1640,7 +1704,9 @@ function insert_alert(a_title, a_message) {
             "a_message": a_message
         },
         success: function (data) {
+            
             data = JSON.parse(data);
+            console.log(data)
             if (data[0] == "success") {
                 alert("Alert added successfully");
                 location.reload();

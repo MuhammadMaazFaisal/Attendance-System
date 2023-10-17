@@ -19,8 +19,7 @@ if (isset($_SESSION['status']) && $_SESSION['user_access'] == 'Administrator') {
                     </ol>
                 </div>
                 <div class="col-md-4">
-                    <button type="button" class="btn btn-primary float-right mr-5" data-toggle="modal"
-                        data-target="#add_alerts">
+                    <button type="button" class="btn btn-primary float-right mr-5" data-toggle="modal" data-target="#add_alerts">
                         Add Alerts
                 </div>
             </div>

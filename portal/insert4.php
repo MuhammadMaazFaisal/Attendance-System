@@ -76,30 +76,52 @@ if ($activity == "Signed in") {
             $status1 = 'Overtime';
         }
     }
-    $sql = "UPDATE `signin` SET `activity`='Signed Out',`Signout_Status`='$status1' WHERE Name='$name' ORDER BY auto DESC LIMIT 1;";
-    $result = mysqli_query($conn, $sql);
-
-    $sql4 = "UPDATE `signin` SET `Signout`='$sign_in' WHERE Name='$name' order by auto desc limit 1";
-    $result = mysqli_query($conn, $sql4);
-} elseif ($activity == "Signed Out" && $curr_date == $date) {
-    $sql = "INSERT INTO `signin`(`user_id`, `Name`,`Signin`, `Status`,`Signout_Status`, `Signout`,`activity`,`Date`,`attendance`) VALUES ('$ID','$name','$sign_in','Welcome Back','-','','Signed in','$date','-')";
-    // $sql5="SELECT * FROM 'signin' where "
-
-    $result = mysqli_query($conn, $sql);
-} else {
-
-    $sql = "INSERT INTO `signin`( `user_id`,`Name`,`Signin`, `Status`, `Signout`,`activity`,`Date`,`attendance`) VALUES ('$ID','$name','$sign_in','$status','-','Signed in','$date','Present')";
-    // $sql5="SELECT * FROM 'signin' where "
-
-    $result = mysqli_query($conn, $sql);
-    $sql1 = "SELECT STATUS FROM `signin` WHERE Name='$name'  ORDER BY auto DESC LIMIT 1;";
-
-    $result = mysqli_query($conn, $sql1);
-
-    if (mysqli_num_rows($result) > 0) {
-        // output data of each row
-        while ($row = mysqli_fetch_assoc($result)) {
-            array_push($array, $row["STATUS"]);
+    if (!$conn) {
+        die("Connection failed: " . mysqli_connect_error());
+    }
+    
+    if ($activity == "Signed In") {
+        // Update the previous record with 'Signed Out' activity and set 'Signout_Status' to '$status1'
+        $sql = "UPDATE `signin` SET `activity`='Signed Out', `Signout_Status`='$status1' WHERE Name='$name' ORDER BY auto DESC LIMIT 1;";
+        $result = mysqli_query($conn, $sql);
+    
+        // Insert a new record with 'Signed In' activity and the current date
+        $sql4 = "INSERT INTO `signin` (`user_id`, `Name`, `Signin`, `Status`, `Signout_Status`, `Signout`, `activity`, `Date`, `attendance`) VALUES (?, ?, ?, 'Welcome Back', '', '', 'Signed In', ?, '-')";
+        $stmt = mysqli_prepare($conn, $sql4);
+        
+        // Bind parameters and execute the prepared statement
+        mysqli_stmt_bind_param($stmt, "ssss", $ID, $name, $sign_in, $date);
+        $result = mysqli_stmt_execute($stmt);
+    
+        if (!$result) {
+            echo "Error: " . mysqli_error($conn);
+        }
+    
+        // Close the prepared statement
+        mysqli_stmt_close($stmt);
+    } elseif ($activity == "Signed Out" && $curr_date == $date) {
+        // Update the previous record with 'Signout' time
+        $sql = "UPDATE `signin` SET `Signout`='$sign_in' WHERE Name='$name' ORDER BY auto DESC LIMIT 1";
+        $result = mysqli_query($conn, $sql);
+    } else {
+        // Insert a new record with 'Signed In' activity, status, and attendance
+        $sql = "INSERT INTO `signin` (`user_id`, `Name`, `Signin`, `Status`, `Signout`, `activity`, `Date`, `attendance`) VALUES ('$ID', '$name', '$sign_in', '$status', '-', 'Signed In', '$date', 'Present')";
+        $result = mysqli_query($conn, $sql);
+    
+        // Retrieve the latest status for the user
+        $sql1 = "SELECT STATUS FROM `signin` WHERE Name='$name' ORDER BY auto DESC LIMIT 1";
+        $result = mysqli_query($conn, $sql1);
+    
+        if ($result) {
+            // Initialize an array to store statuses
+            $array = array();
+    
+            // Fetch and store the status in the array
+            while ($row = mysqli_fetch_assoc($result)) {
+                array_push($array, $row["STATUS"]);
+            }
+        } else {
+            echo "Error: " . mysqli_error($conn);
         }
     }
 }

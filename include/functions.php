@@ -55,6 +55,8 @@ if ($_POST["action"] == "login") {
     get_department();
 } elseif ($_POST["action"] == "get_employees_by_department") {
     get_employees_by_department();
+}   elseif ($_POST["action"] == "get_all_employees") {
+    get_all_employees();
 } elseif ($_POST["action"] == "get_monthly_data") {
     get_monthly_data();
 } elseif ($_POST["action"] == "adjustment_data") {
@@ -94,9 +96,11 @@ if ($_POST["action"] == "login") {
 } elseif ($_POST["action"] == "result") {
     $fetchData = fetch_data();
     show_data($fetchData);
-
+} elseif ($_POST["action"] == "PrintSetter") {
+    PrintSetter();
+} elseif ($_POST["action"] == "PrintSetter2") {
+    PrintSetter2();
 }
-
 function logout()
 {
     session_start();
@@ -174,6 +178,7 @@ function add_employee()
             $time_out = $_POST["time_out"];
             $time_in = date('h:i:sa', strtotime($time_in));
             $time_out = date('h:i:sa', strtotime($time_out));
+            $barcode = $_POST["barcode"];
 
             $user_id = "ET";
 
@@ -218,7 +223,7 @@ function add_employee()
             }
             $user_id .= $count;
 
-            $sql = "INSERT INTO `users`(`user_id`,`employee_name`, `department`, `gender`, `email`, `current_address`, `user_access`, `password`, `designation`, `joining_date`, `qualification`, `contact_number`, `cnic`, `date_of_birth`, `martial_status`,`user_image`,`user_shift`,`user_status`,`time_in`,`time_out`) VALUES('$user_id','$employee_name','$department','$gender','$email','$current_address','$user_access','$password','$designation','$joining_date','$qualification','$contact_number','$cnic','$date_of_birth','$martial_status', '$path','$user_shift','$user_status','$time_in','$time_out')";
+            $sql = "INSERT INTO `users`(`user_id`,`employee_name`, `department`, `gender`, `email`, `current_address`, `user_access`, `password`, `designation`, `joining_date`, `qualification`, `contact_number`, `cnic`, `date_of_birth`, `martial_status`,`user_image`,`user_shift`,`user_status`,`time_in`,`time_out`,`barcode`) VALUES('$user_id','$employee_name','$department','$gender','$email','$current_address','$user_access','$password','$designation','$joining_date','$qualification','$contact_number','$cnic','$date_of_birth','$martial_status', '$path','$user_shift','$user_status','$time_in','$time_out','$barcode')";
             if ($conn->query($sql) === true) {
                 echo "Employee Added Successfully";
             } else {
@@ -267,6 +272,7 @@ function edit_employee()
                 $time_out = $_POST["time_out"];
                 $time_in = date('h:i:sa', strtotime($time_in));
                 $time_out = date('h:i:sa', strtotime($time_out));
+                // $barcode = $_POST["barcode"];
 
                 $sql = "UPDATE `users` SET `employee_name`='$employee_name',`department`='$department',`gender`='$gender',`email`='$email',`current_address`='$current_address',`user_access`='$user_access',`password`='$password',`designation`='$designation',`joining_date`='$joining_date',`qualification`='$qualification',`contact_number`='$contact_number',`cnic`=' $cnic',`date_of_birth`='$date_of_birth',`martial_status`='$martial_status',`user_image`='$path',`time_in`='$time_in',`time_out`='$time_out',`user_status`='$user_status' WHERE `user_id`='$user_id'";
                 if ($conn->query($sql) === true) {
@@ -299,6 +305,7 @@ function edit_employee()
         $time_out = $_POST["time_out"];
         $time_in = date('h:i:sa', strtotime($time_in));
         $time_out = date('h:i:sa', strtotime($time_out));
+        // $barcode = $_POST["barcode"];
 
         $sql = "UPDATE `users` SET `employee_name`='$employee_name',`department`='$department',`gender`='$gender',`email`='$email',`current_address`='$current_address',`user_access`='$user_access',`password`='$password',`designation`='$designation',`joining_date`='$joining_date',`qualification`='$qualification',`contact_number`='$contact_number',`cnic`=' $cnic',`date_of_birth`='$date_of_birth',`martial_status`='$martial_status',`time_in`='$time_in',`time_out`='$time_out',`user_status`='$user_status' WHERE `user_id`='$user_id'";
         if ($conn->query($sql) === true) {
@@ -903,6 +910,22 @@ function get_employees_by_department()
     echo json_encode($array);
 }
 
+function get_all_employees()
+{
+    include "db_connection.php";
+    $sql = "SELECT * FROM `users`";
+    $result = mysqli_query($conn, $sql);
+    $array = [];
+    if ($result->num_rows > 0) {
+        while ($row = $result->fetch_assoc()) {
+            array_push($array, $row);
+        }
+    } else {
+        echo "0 results";
+    }
+    echo json_encode($array);
+}
+
 function get_monthly_data()
 {
     include "db_connection.php";
@@ -1223,7 +1246,7 @@ function get_alerts()
     include "db_connection.php";
     $user_id = $_POST['user_id'];
     $array = [];
-    $sql1 = "SELECT COUNT(*) FROM `alert` WHERE `user_id`='$user_id' AND `read_status`='Unread'";
+    $sql1 = "SELECT COUNT(*) FROM `alert` WHERE `user_id`='$user_id' AND `read_status`='unread'";
     $result1 = mysqli_query($conn, $sql1);
     if ($result1->num_rows > 0) {
         while ($row = $result1->fetch_assoc()) {
@@ -1247,39 +1270,40 @@ function get_alerts()
 function add_alert()
 {
     include "db_connection.php";
-    $array = ["dsa"];
+    $array = [];
     $a_message = $_POST['a_message'];
     $a_title = $_POST['a_title'];
     $date = date("d/m/Y");
-    $sql1 = "SELECT `user_id` FROM `users` WHERE `user_access`='Employee' And `user_status`='Active'";
+    $sql1 = "SELECT `user_id` FROM `users` WHERE `user_access`='Employee' AND `user_status`='Active';
+    ";
+    
+    // Execute the first query to get user IDs
     $result1 = mysqli_query($conn, $sql1);
-    if ($conn->query($sql1) == true) {
-        $array[0] = "success";
-    } else {
-        $array[0] = "Error: " . $sql1 . "<br>" . $db->error;
-    }
-
-    if ($result1->num_rows > 0) {
+    
+    if ($result1) {
+        $array[0] = "success"; // Update the status only once if the query is successful
         while ($row = $result1->fetch_assoc()) {
             $user_id = $row['user_id'];
             $sql = "INSERT INTO `alert`(`user_id`,`a_title`, `a_message`,`read_status`,`a_date`) VALUES ('$user_id','$a_title','$a_message','unread','$date')";
-            if ($conn->query($sql) == true) {
-                $array[0] = "success";
-            } else {
-                $array[0] = "Error: " . $sql . "<br>" . $db->error;
+            if ($conn->query($sql) != true) {
+                // If the insert query fails, update the error message
+                $array[0] = "Error: " . $sql . "<br>" . $conn->error;
             }
-
-        }}
+        }
+    } else {
+        $array[0] = "Error: " . $sql1 . "<br>" . $conn->error;
+    }
+    
     echo json_encode($array);
-
 }
+
 
 function get_all_alerts()
 {
     include "db_connection.php";
     $array = [];
 
-    $sql = "SELECT distinct(`a_message`),`a_date`,`a_title` FROM `alert` ORDER BY `a_id` DESC";
+    $sql = "SELECT `a_message`, `a_date`, `a_title` FROM `alert` GROUP BY `a_message`, `a_date`, `a_title`";
     $result = mysqli_query($conn, $sql);
     if ($result->num_rows > 0) {
         while ($row = $result->fetch_assoc()) {
@@ -1288,6 +1312,7 @@ function get_all_alerts()
     }
     echo json_encode($array);
 }
+
 
 function alert_modal()
 {
@@ -1470,7 +1495,7 @@ function insert()
         $result = mysqli_query($conn, $sql);
     } else {
 
-        $sql = "INSERT INTO `signin`( `user_id`,`Name`,`Signin`, `Status`, `Signout`,`activity`,`Date`,`attendance`) VALUES ('$ID','$name','$sign_in','$status','-','Signed in','$date','Present')";
+        $sql = "INSERT INTO `signin`( `user_id`,`Name`,`Signin`, `Status`, `Signout_Status`, `Signout`,`activity`,`Date`,`attendance`) VALUES ('$ID','$name','$sign_in','$status','-','','Signed in','$date','Present')";
         // $sql5="SELECT * FROM 'signin' where "
 
         $result = mysqli_query($conn, $sql);
@@ -1598,3 +1623,85 @@ function show_data($fetchData)
     }
     echo "</table>";
 }
+
+// function PrintSetter()
+// {
+//     include "db_connection.php";
+    
+//     error_reporting(E_ALL);
+//     ini_set('display_errors', 1);
+    
+//     $array = array();
+//     $getRecordQuery = "SELECT * FROM `users` WHERE `user_id`='ETPDJD003'";
+
+//     $getRecordStatement = $pdo->prepare($getRecordQuery);
+
+
+//     if ($getRecordStatement->execute()) {
+//         $array = $getRecordStatement->fetchAll(PDO::FETCH_ASSOC);
+//         echo json_encode($array, true);
+//         die;
+//     }
+// }
+
+function PrintSetter()
+{
+    include "db_connection.php";
+    
+    error_reporting(E_ALL);
+    ini_set('display_errors', 1);
+    
+    $array = array();   
+    
+    
+    $user_id =$_POST["user_id"];
+   
+    $getRecordQuery = "SELECT `user_id`,`employee_name` FROM `users` WHERE `user_id`='$user_id'";
+    
+    $result = mysqli_query($conn, $getRecordQuery);
+    
+    if ($result) {
+        while ($row = mysqli_fetch_assoc($result)) {
+            $array[] = $row;
+        }
+        echo json_encode($array, true);
+    } else {
+        echo "Query error: " . mysqli_error($con);
+    }
+    
+}
+
+function PrintSetter2()
+{
+    include "db_connection.php";
+    
+    error_reporting(E_ALL);
+    ini_set('display_errors', 1);
+    
+    $array = array();   
+    
+    
+    $user_id =$_POST["user_id"];
+   
+    $getRecordQuery = "SELECT `user_id`,`employee_name` FROM `users` WHERE `user_id`='$user_id'";
+    
+    $result = mysqli_query($conn, $getRecordQuery);
+    
+    if ($result) {
+        while ($row = mysqli_fetch_assoc($result)) {
+            $array[] = $row;
+        }
+        echo json_encode($array, true);
+    } else {
+        echo "Query error: " . mysqli_error($con);
+    }
+    
+}
+
+
+
+
+
+
+
+

@@ -5,6 +5,7 @@ if (isset($_SESSION['status']) && $_SESSION['user_access'] == 'Administrator') {
     include "include/navbar.php";
     include "include/sidebar.php";
     include "include/db_connection.php";
+    
     ?>
 
 <div id="layoutSidenav_content">
@@ -288,11 +289,16 @@ $.extend(true, $.fn.dataTable.defaults, {
 
 });
 
+$(document).ready(function() {
+    get_all_employees();
+});
 
 $("#department").change(function() {
     let department = $("#department").val();
     get_employees_by_department(department);
 });
+
+
 </script>
 
 <style>

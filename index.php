@@ -11,11 +11,11 @@ if (isset($_SESSION['status']) && $_SESSION['user_access'] == 'Administrator') {
     <main>
         <div class="container-fluid">
             <h1 class="mt-4">Dashboard</h1>
-            <ol class="breadcrumb mb-4">
+            <!-- <ol class="breadcrumb mb-4">
                 <li class="breadcrumb-item active">Dashboard</li>
-            </ol>
+            </ol> -->
             <div class="row ml-auto">
-                <div class="col-12 col-md-5 col-lg-2 mt-2">
+                <div class="col-12 col-md-5 col-lg-4 mt-2">
                     <div class="card bg-primary text-white">
                         <div class="card-body"><span class="h5">All Employees</span>
                         </div>
@@ -25,7 +25,7 @@ if (isset($_SESSION['status']) && $_SESSION['user_access'] == 'Administrator') {
                         </div>
                     </div>
                 </div>
-                <div class="col-12 col-md-5 col-lg-2 mt-2 ">
+                <div class="col-12 col-md-5 col-lg-4 mt-2 ">
                     <div class="card bg-warning text-white">
                         <div class="card-body"><span class="h5">Add Employee</span>
                         </div>
@@ -35,7 +35,7 @@ if (isset($_SESSION['status']) && $_SESSION['user_access'] == 'Administrator') {
                         </div>
                     </div>
                 </div>
-                <div class="col-12 col-md-5 col-lg-2 mt-2">
+                <div class="col-12 col-md-5 col-lg-4 mt-2">
                     <div class="card bg-danger text-white">
                         <div class="card-body"><span class="h5">Edit Employee</span>
                         </div>
@@ -45,7 +45,7 @@ if (isset($_SESSION['status']) && $_SESSION['user_access'] == 'Administrator') {
                         </div>
                     </div>
                 </div>
-                <div class="col-12 col-md-5 col-lg-2 mt-2">
+                <div class="col-12 col-md-5 col-lg-4 mt-2">
                     <div class="card bg-success text-white">
                         <div class="card-body"><span class="h5">Leaves</span>
                         </div>
@@ -55,7 +55,7 @@ if (isset($_SESSION['status']) && $_SESSION['user_access'] == 'Administrator') {
                         </div>
                     </div>
                 </div>
-                <div class="col-12 col-md-5 col-lg-2 mt-2 ">
+                <div class="col-12 col-md-5 col-lg-4 mt-2 ">
                     <div class="card bg-info text-white">
                         <div class="card-body"><span class="h5">Attendance Report</span>
                         </div>
@@ -65,7 +65,7 @@ if (isset($_SESSION['status']) && $_SESSION['user_access'] == 'Administrator') {
                         </div>
                     </div>
                 </div>
-                <div class="col-12 col-md-5 col-lg-2 mt-2">
+                <div class="col-12 col-md-5 col-lg-4 mt-2">
                     <div class="card bg-warning text-white">
                         <div class="card-body"><span class="h5">Adjustments</span>
                         </div>
@@ -75,7 +75,7 @@ if (isset($_SESSION['status']) && $_SESSION['user_access'] == 'Administrator') {
                         </div>
                     </div>
                 </div>
-                <div class="col-12 col-md-5 col-lg-2 mt-2 ">
+                <div class="col-12 col-md-5 col-lg-4 mt-2 ">
                     <div class="card bg-info text-white">
                         <div class="card-body"><span class="h5">Add Alert</span>
                         </div>
