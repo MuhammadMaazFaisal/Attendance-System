@@ -323,21 +323,23 @@ function display_employee_data()
     $sql = "SELECT * FROM `users` where `user_id`='$employee_id'";
     $result = mysqli_query($conn, $sql);
     $array = [];
+
     if ($result->num_rows > 0) {
         while ($row = $result->fetch_assoc()) {
+            // Convert time_in and time_out to the required format
+            $row['time_in'] = date("H:i:s", strtotime($row['time_in'])); // Assuming time_in is in 12-hour format
+            $row['time_out'] = date("H:i:s", strtotime($row['time_out'])); // Assuming time_out is in 12-hour format
+
             array_push($array, $row);
         }
     } else {
         echo "0 results";
     }
-    $time_in = $array[0]['time_in'];
-    $time_out = $array[0]['time_out'];
-    $time_in = date('h:i a', strtotime($time_in));
-    $time_out = date('h:i a', strtotime($time_out));
-    $array[0]['time_in'] = $time_in;
-    $array[0]['time_out'] = $time_out;
+
+    // Do not perform time conversion here; send the time values as they are
     echo json_encode($array);
 }
+
 
 function get_employee_data()
 {

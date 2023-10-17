@@ -2,25 +2,33 @@ $(document).ready(function () {
   // Focus on the input field when the page loads
   $("#input").focus();
 
+  var inputTimer; // Define a timer
+
   $("#input").on("input", function () {
-    var id = $(this).val();
-    console.log(id);
-    if (id == "") {
-      console.log("empty");
-    } else {
-      $.ajax({
-        type: "POST",
-        url: "../include/functions.php",
-        data: {
-          action: "insert",
-          id: id,
-        },
-        success: function (data) {
-          display(id);
-          modal(id);
-        },
-      });
-    }
+    clearTimeout(inputTimer); // Clear any previous timer
+
+    // Set a timer to wait for 500 milliseconds after the last input
+    inputTimer = setTimeout(function () {
+      var id = $("#input").val();
+      if (id === "") {
+        console.log("empty");
+      } else {
+        $.ajax({
+          type: "POST",
+          url: "../include/functions.php",
+          data: {
+            action: "insert",
+            id: id,
+          },
+          success: function (data) {
+            display(id);
+            modal(id);
+            // Clear the input field after displaying the results
+            $("#input").val(""); // Clear the input field
+          },
+        });
+      }
+    }, 50); // Wait for 500 milliseconds after the last input
   });
 
   function display(a) {

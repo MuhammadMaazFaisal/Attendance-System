@@ -281,10 +281,10 @@ if (isset($_SESSION['status']) && $_SESSION['user_access'] == 'Administrator') {
 }
 ?>
 <script>
-    let department = document.getElementById('department');
-    $(document).ready(function() {
-        get_designation(department.value);
-    });
+    // let department = document.getElementById('department');
+    // $(document).ready(function() {
+    //     get_designation(department.value);
+    // });
 
     department.addEventListener('change', function() {
         $("#designation").empty();
@@ -297,14 +297,22 @@ if (isset($_SESSION['status']) && $_SESSION['user_access'] == 'Administrator') {
         let num_images = document.getElementById("num_images");
         num_images.innerHTML = num_of_images + " Image Selected";
     })
-    var user_id1 = $('#user_id').val();
     $(document).ready(function() {
-        load_edit_user_page();
+    // Initial department selection setup
+    let department = document.getElementById('department');
+    department.addEventListener('change', function() {
+        $("#designation").empty();
+        get_designation(department.value);
+        
     });
+
+    // Load the edit user page
+    load_edit_user_page();
+});
 
     let drop_down = document.getElementById("drop_down");
     drop_down.addEventListener("change", function() {
-       
+        $("#designation").empty();
         edit_user_details(drop_down);
     });
 
@@ -313,7 +321,7 @@ if (isset($_SESSION['status']) && $_SESSION['user_access'] == 'Administrator') {
         e.preventDefault();
         let form = new FormData(this);
         form.append("action", "edit_employee");
-        form.append("user_id", user_id1);
+        form.append("user_id", $('#user_id').val());
         edit_user(form);
     }));
 

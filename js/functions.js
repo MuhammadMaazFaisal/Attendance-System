@@ -405,7 +405,9 @@ function view_attendance(id) {
                     year: year
                 },
                 success: function (monthly_record) {
+                    console.log( monthly_record);
                     monthly_record = JSON.parse(monthly_record);
+                    console.log( monthly_record);
                     let official_days = document.getElementById("official_days");
                     let presents = document.getElementById("presents");
                     let absents = document.getElementById("absents");
@@ -927,9 +929,9 @@ function edit_user(form) {
         data: form,
         success: function (data) {
             alert(data);
-            // if (data == "Employee details updated successfully") {
-            //     window.location.href = "all_users.php";
-            // }
+            if (data == "Employee details updated successfully") {
+                window.location.href = "all_users.php";
+            }
         }
     })
 }
@@ -969,12 +971,13 @@ function edit_user_details(drop_down) {
             
             let data = JSON.parse(result);
             console.log(data);
-            console.log("dfsf");
+            // console.log("dfsf");
             employee_name.value = data[0].employee_name;
             user_id.value = data[0].user_id;
             gender.value = data[0].gender;
             designation.value = data[0].designation;
             department.value = data[0].department;
+            get_designation(department.value);
             email.value = data[0].email;
             joining_date.value = data[0].joining_date;
             qualification.value = data[0].qualification;
@@ -993,7 +996,7 @@ function edit_user_details(drop_down) {
             // barcode.value = data[0].barcode;
             let form = document.getElementById("form");
             form.classList.remove("invisible");
-            get_designation(department.value);
+            // get_designation(department.value);
 
         }
     })
