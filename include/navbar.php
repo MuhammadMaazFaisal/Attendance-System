@@ -133,19 +133,24 @@
         const logout = document.getElementById('logout');
 
         logout.addEventListener('click', function() {
-            logoutf();
+            logout1();
         });
 
-        function logoutf() {
-            // // Clear local storage
-            // localStorage.clear();
-
-            // Clear session storage
-            sessionStorage.clear();
-
-            // Redirect the user to index.php
-            window.location.href = 'login.php';
+        function logout1() {
+            $.ajax({
+                url: 'include/functions.php',
+                type: 'POST',
+                data: {
+                    action: "logout"
+                },
+                success: function(res) {
+                    if (res == "logout") {
+                        window.location.href = "login.php";
+                    }
+                }
+            });
         }
+
     });
 
     let save_btn = document.getElementById('save_btn');
