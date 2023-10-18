@@ -116,7 +116,7 @@ function login()
     $password = $_POST["password"];
     $user_type = "";
 
-    $sql = "SELECT * FROM `users` WHERE `user_id`='$user_id' AND `password`='$password'";
+    $sql = "SELECT * FROM `users` WHERE `user_id`='$user_id' AND `password`='$password' AND `user_status`='Active' ";
     $result = mysqli_query($conn, $sql);
     if ($result->num_rows > 0) {
 
