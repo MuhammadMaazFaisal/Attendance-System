@@ -118,7 +118,7 @@ if (isset($_SESSION['status']) && $_SESSION['user_access'] == 'Administrator') {
                                             <div class="form-group">
                                                 <label>Department *</label>
                                                 <div>
-                                                    <input id="department" class="form-control" name="department"
+                                                    <input id="v_department" class="form-control" name="department"
                                                         type="text" readonly>
                                                 </div>
                                             </div>

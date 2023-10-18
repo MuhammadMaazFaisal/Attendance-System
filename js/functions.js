@@ -297,10 +297,11 @@ function get_leave_data(date) {
 
 function view_user(employee_id) {
     $('#user_info').on('shown.bs.modal', function (e) {
+        let image=document.getElementById("image");
         let employee_name = document.getElementById("employee_name");
         let gender = document.getElementById("gender");
         let designation = document.getElementById("designation");
-        let department = document.getElementById("department");
+        let department = document.getElementById("v_department");
         let email = document.getElementById("email");
         let joining_date = document.getElementById("joining_date");
         let qualification = document.getElementById("qualification");
@@ -323,6 +324,8 @@ function view_user(employee_id) {
             },
             success: function (result) {
                 let data = JSON.parse(result);
+                console.log(data);
+                image.src = "Attendance System/" + data[0].user_image;
                 user_id = data[0].user_id;
                 employee_name.value = data[0].employee_name;
                 gender.value = data[0].gender;
