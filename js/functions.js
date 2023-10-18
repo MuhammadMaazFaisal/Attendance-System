@@ -978,9 +978,9 @@ function edit_user_details(drop_down) {
             employee_name.value = data[0].employee_name;
             user_id.value = data[0].user_id;
             gender.value = data[0].gender;
-            designation.value = data[0].designation;
             department.value = data[0].department;
             get_designation(department.value);
+            designation.value = data[0].designation;
             email.value = data[0].email;
             joining_date.value = data[0].joining_date;
             qualification.value = data[0].qualification;
