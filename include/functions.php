@@ -846,6 +846,16 @@ function change_password()
     $old_password = $_POST['old_password'];
     $new_password = $_POST['new_password'];
     $user_id = $_POST['user_id'];
+    $sql0= "SELECT * FROM `users` WHERE `user_id`='$user_id' AND `password`='$old_password'";
+    $result0 = mysqli_query($conn, $sql0);
+    if ($result0->num_rows > 0) {
+        while ($row = $result0->fetch_assoc()) {
+            $old_password = $row['password'];
+        }
+    } else {
+        echo "Old Password is Incorrect";
+        return;
+    }
     $sql = "Update `users` SET `password`='$new_password' WHERE `user_id`='$user_id'";
     if ($conn->query($sql) == true) {
         echo "Password Changed Successfully";
