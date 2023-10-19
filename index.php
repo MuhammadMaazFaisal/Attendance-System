@@ -16,7 +16,7 @@ if (isset($_SESSION['status']) && $_SESSION['user_access'] == 'Administrator') {
             </ol> -->
             <div class="row ml-auto">
                 <div class="col-12 col-md-5 col-lg-4 mt-4">
-                    <div class="card bg-primary text-white" style="width: 400px; height: 150px;">
+                    <div class="card bg-primary text-white" style="height: 150px;">
                         <div class="card-body"><span class="h5">All Employees</span>
                         </div>
                         <div class="card-footer d-flex align-items-center justify-content-between">
@@ -36,7 +36,7 @@ if (isset($_SESSION['status']) && $_SESSION['user_access'] == 'Administrator') {
                     </div>
                 </div> -->
                 <div class="col-12 col-md-5 col-lg-4 mt-4">
-                    <div class="card bg-primary text-white" style="width: 400px; height: 150px;">
+                    <div class="card bg-primary text-white" style="height: 150px;">
                         <div class="card-body"><span class="h5">Edit Employee</span>
                         </div>
                         <div class="card-footer d-flex align-items-center justify-content-between">
@@ -46,7 +46,7 @@ if (isset($_SESSION['status']) && $_SESSION['user_access'] == 'Administrator') {
                     </div>
                 </div>
                 <div class="col-12 col-md-5 col-lg-4 mt-4">
-                    <div class="card bg-primary text-white" style="width: 400px; height: 150px;">
+                    <div class="card bg-primary text-white" style="height: 150px;">
                         <div class="card-body"><span class="h5">Leaves</span>
                         </div>
                         <div class="card-footer d-flex align-items-center justify-content-between">
@@ -56,7 +56,7 @@ if (isset($_SESSION['status']) && $_SESSION['user_access'] == 'Administrator') {
                     </div>
                 </div>
                 <div class="col-12 col-md-5 col-lg-4 mt-5 ">
-                    <div class="card bg-primary text-white" style="width: 400px; height: 150px;">
+                    <div class="card bg-primary text-white" style="height: 150px;">
                         <div class="card-body"><span class="h5">Attendance Report</span>
                         </div>
                         <div class="card-footer d-flex align-items-center justify-content-between">
@@ -66,7 +66,7 @@ if (isset($_SESSION['status']) && $_SESSION['user_access'] == 'Administrator') {
                     </div>
                 </div>
                 <div class="col-12 col-md-5 col-lg-4 mt-5">
-                    <div class="card bg-primary text-white" style="width: 400px; height: 150px;">
+                    <div class="card bg-primary text-white" style="height: 150px;">
                         <div class="card-body"><span class="h5">Adjustments</span>
                         </div>
                         <div class="card-footer d-flex align-items-center justify-content-between">
@@ -76,7 +76,7 @@ if (isset($_SESSION['status']) && $_SESSION['user_access'] == 'Administrator') {
                     </div>
                 </div>
                 <div class="col-12 col-md-5 col-lg-4 mt-5 ">
-                    <div class="card bg-primary text-white" style="width: 400px; height: 150px;">
+                    <div class="card bg-primary text-white" style="height: 150px;">
                         <div class="card-body"><span class="h5">Add Alert</span>
                         </div>
                         <div class="card-footer d-flex align-items-center justify-content-between">

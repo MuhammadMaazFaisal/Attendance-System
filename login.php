@@ -5,7 +5,11 @@ include "include/header.php";
    
 
    .fxt-heading-content .fxt-inner-wrap {
+
         background-color: 	rgba(135, 206, 235,0.6) !important;
+        border-radius: 10px !important;
+        /* visibility: hidden !important; */
+       
 
     }
     .fxt-content-wrap {
@@ -17,21 +21,6 @@ include "include/header.php";
     }
     
 </style>
-<!-- 
-    .fxt-heading-content{
-        background-color: 	#87CEEB;
-        /* Set the background color to a light purple with 50% opacity */
-        /* You can adjust the RGB values and opacity as needed */
-    }
-
-    .fxt-sub-title {
-        background-color: #0000 !important;
-    }
-
-    .fxt-main-title {
-        background-color: #0000 !important;
-    } -->
-
 <div id="preloader" class="preloader">
     <div class='inner'>
         <div class='line1'></div>

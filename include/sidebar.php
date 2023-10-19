@@ -13,8 +13,7 @@
     }
 
     .sb-sidenav-menu {
-        background-color: 	rgba(51, 174, 255,0.9) !important;
-
+        background-color: 	rgba(130,206,219,0.9);
     }
 
 </style>
