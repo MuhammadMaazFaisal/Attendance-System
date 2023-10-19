@@ -1117,8 +1117,8 @@ function load_my_profile_page(emp) {
     let current_address = document.getElementById("current_address");
     let date_of_birth = document.getElementById("date_of_birth");
     let martial_status = document.getElementById("martial_status");
-    let password = document.getElementById("password");
-    let user_access = document.getElementById("user_access");
+    // let password = document.getElementById("password");
+    // let user_access = document.getElementById("user_access");
     $.ajax({
         url: "include/functions.php",
         type: "POST",
@@ -1130,19 +1130,24 @@ function load_my_profile_page(emp) {
             console.log(data);
             data = JSON.parse(data);
             
-            employee_name.value = data[0].employee_name;
-            user_id.value = data[0].user_id;
-            gender.value = data[0].gender;
-            designation.value = data[0].designation;
-            department.value = data[0].department;
-            email.value = data[0].email;
-            joining_date.value = data[0].joining_date;
-            qualification.value = data[0].qualification;
-            contact_number.value = data[0].contact_number;
-            cnic.value = data[0].cnic;
-            current_address.value = data[0].current_address;
-            date_of_birth.value = data[0].date_of_birth;
-            martial_status.value = data[0].martial_status;
+            function replaceNull(value) {
+                return value !== null ? value : "-";
+            }
+        
+            // Set the field values, replacing null with "-"
+            employee_name.value = replaceNull(data[0].employee_name);
+            user_id.value = replaceNull(data[0].user_id);
+            gender.value = replaceNull(data[0].gender);
+            designation.value = replaceNull(data[0].designation);
+            department.value = replaceNull(data[0].department);
+            email.value = replaceNull(data[0].email);
+            joining_date.value = replaceNull(data[0].joining_date);
+            qualification.value = replaceNull(data[0].qualification);
+            contact_number.value = replaceNull(data[0].contact_number);
+            cnic.value = replaceNull(data[0].cnic);
+            current_address.value = replaceNull(data[0].current_address);
+            date_of_birth.value = replaceNull(data[0].date_of_birth);
+            martial_status.value = replaceNull(data[0].martial_status);
 
         }
     })

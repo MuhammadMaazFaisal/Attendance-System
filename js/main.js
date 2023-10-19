@@ -1,11 +1,11 @@
 (function($) {
-    "use strict";
+    
 
     /*-------------------------------------
 	Background image
 	-------------------------------------*/
     $("[data-bg-image]").each(function() {
-        var img = $(this).data("img/login.png");
+        var img = $(this).data("img/login.jpg");
         $(this).css({
             backgroundImage: "url(" + img + ")"
         });

@@ -12,9 +12,9 @@ if (isset($_SESSION['status']) && $_SESSION['user_access'] == 'Employee') {
         <div class="container-fluid">
             <h1 class="mt-5 mb-5">Dashboard</h1>
             
-            <div class="row">
-                <div class="col-12 col-md-5 col-lg-4 mt-2">
-                    <div class="card bg-primary text-white">
+            <div class="row ml-auto">
+                <div class="col-12 col-md-5 col-lg-4 mt-4">
+                    <div class="card bg-primary text-white" style="width: 400px; height: 150px;">
                         <div class="card-body"><span class="h5">My Profile</span>
                         </div>
                         <div class="card-footer d-flex align-items-center justify-content-between">
@@ -23,8 +23,8 @@ if (isset($_SESSION['status']) && $_SESSION['user_access'] == 'Employee') {
                         </div>
                     </div>
                 </div>
-                <div class="col-12 col-md-5 col-lg-4 mt-2">
-                    <div class="card bg-warning text-white">
+                <div class="col-12 col-md-5 col-lg-4 mt-4">
+                    <div class="card bg-primary text-white" style="width: 400px; height: 150px;">
                         <div class="card-body"><span class="h5">Leaves</span>
                         </div>
                         <div class="card-footer d-flex align-items-center justify-content-between">
@@ -33,8 +33,8 @@ if (isset($_SESSION['status']) && $_SESSION['user_access'] == 'Employee') {
                         </div>
                     </div>
                 </div>
-                <div class="col-12 col-md-5 col-lg-4 mt-2 ">
-                    <div class="card bg-success text-white">
+                <div class="col-12 col-md-5 col-lg-4 mt-4 ">
+                    <div class="card bg-primary text-white" style="width: 400px; height: 150px;">
                         <div class="card-body"><span class="h5">Apply for Leave</span>
                         </div>
                         <div class="card-footer d-flex align-items-center justify-content-between">
@@ -43,8 +43,8 @@ if (isset($_SESSION['status']) && $_SESSION['user_access'] == 'Employee') {
                         </div>
                     </div>
                 </div>
-                <div class="col-12 col-md-5 col-lg-4 mt-2">
-                    <div class="card bg-danger text-white">
+                <div class="col-12 col-md-5 col-lg-4 mt-5">
+                    <div class="card bg-primary text-white" style="width: 400px; height: 150px;">
                         <div class="card-body"><span class="h5">Attendance</span>
                         </div>
                         <div class="card-footer d-flex align-items-center justify-content-between">
@@ -53,8 +53,8 @@ if (isset($_SESSION['status']) && $_SESSION['user_access'] == 'Employee') {
                         </div>
                     </div>
                 </div>
-                <div class="col-12 col-md-5 col-lg-4 mt-2">
-                    <div class="card bg-info text-white">
+                <div class="col-12 col-md-5 col-lg-4 mt-5">
+                    <div class="card bg-primary text-white" style="width: 400px; height: 150px;">
                         <div class="card-body"><span class="h5">Attendance Report</span>
                         </div>
                         <div class="card-footer d-flex align-items-center justify-content-between">
@@ -64,8 +64,8 @@ if (isset($_SESSION['status']) && $_SESSION['user_access'] == 'Employee') {
                         </div>
                     </div>
                 </div>
-                <div class="col-12 col-md-5 col-lg-4 mt-2">
-                    <div class="card bg-warning text-white">
+                <div class="col-12 col-md-5 col-lg-4 mt-5">
+                    <div class="card bg-primary text-white" style="width: 400px; height: 150px;">
                         <div class="card-body"><span class="h5">Apply for Adjustment</span>
                         </div>
                         <div class="card-footer d-flex align-items-center justify-content-between">
@@ -80,7 +80,9 @@ if (isset($_SESSION['status']) && $_SESSION['user_access'] == 'Employee') {
     <footer class="py-4 bg-light mt-auto">
         <div class="container-fluid">
             <div class="d-flex align-items-center justify-content-between small">
-                <div class="text-muted">Copyright &copy; Your Website 2020</div>
+                <div class="text-muted">Copyright &copy; 
+                <a href="http://esolacetech.com/" target="_blank" style="color: #cd71f5;"><b>Esolace Tech</b>.</a>.</a>
+                </div>
                 <div>
                     <a href="#">Privacy Policy</a>
                     &middot;

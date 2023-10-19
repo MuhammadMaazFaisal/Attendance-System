@@ -1,4 +1,10 @@
-<nav class="sb-topnav navbar navbar-expand navbar-light bg-white shadow-sm">
+<style>
+    .bg-custom-color {
+        background-color: 	rgba(173,216,230,0.9) !important;
+
+    }
+</style>
+<nav class="sb-topnav navbar navbar-expand navbar-light bg-white bg-custom-color shadow-sm">
     <a class="navbar-brand" href=""><img alt="logo" src="img/esolace logo.png"></a>
     <button class="btn btn-link btn-sm order-1 order-lg-0" id="sidebarToggle" href="#"><i class="fas fa-bars"></i></button>
     <!-- Navbar-->

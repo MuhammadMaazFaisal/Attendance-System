@@ -1,6 +1,36 @@
 <?php
 include "include/header.php";
 ?>
+<style>
+   
+
+   .fxt-heading-content .fxt-inner-wrap {
+        background-color: 	rgba(135, 206, 235,0.6) !important;
+
+    }
+    .fxt-content-wrap {
+
+        background-image: url('img/login.jpg'); /* Replace with the actual URL of your inner background image */
+        background-size: cover;
+        background-repeat: no-repeat;
+        background-position: center center;
+    }
+    
+</style>
+<!-- 
+    .fxt-heading-content{
+        background-color: 	#87CEEB;
+        /* Set the background color to a light purple with 50% opacity */
+        /* You can adjust the RGB values and opacity as needed */
+    }
+
+    .fxt-sub-title {
+        background-color: #0000 !important;
+    }
+
+    .fxt-main-title {
+        background-color: #0000 !important;
+    } -->
 
 <div id="preloader" class="preloader">
     <div class='inner'>
@@ -31,13 +61,11 @@ include "include/header.php";
                     <form>
                         <div class="form-group mt-4">
                             <label for="user_id" class="fxt-label">User Id</label>
-                            <input type="text" id="user_id" class="form-control" name="user_id"
-                                placeholder="Enter User Id" required="required">
+                            <input type="text" id="user_id" class="form-control" name="user_id" placeholder="Enter User Id" required="required">
                         </div>
                         <div class="form-group mb-5">
                             <label for="password" class="fxt-label">Password</label>
-                            <input id="password" type="password" class="form-control" name="password"
-                                placeholder="Enter Password" required="required">
+                            <input id="password" type="password" class="form-control" name="password" placeholder="Enter Password" required="required">
                         </div>
                         <div class="form-group mb-3">
                             <button id="submit" class="fxt-btn-fill">Log in</button>
@@ -54,11 +82,11 @@ include "include/footer.php";
 ?>
 
 <script>
-let submit = document.getElementById("submit");
-submit.addEventListener("click", function(e) {
-    e.preventDefault();
-    let user_id = document.getElementById("user_id").value;
-    let password = document.getElementById("password").value;
-    login(user_id, password);
-})
+    let submit = document.getElementById("submit");
+    submit.addEventListener("click", function(e) {
+        e.preventDefault();
+        let user_id = document.getElementById("user_id").value;
+        let password = document.getElementById("password").value;
+        login(user_id, password);
+    })
 </script>
