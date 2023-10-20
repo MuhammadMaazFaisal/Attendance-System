@@ -1,7 +1,6 @@
 <style>
     .bg-custom-color {
-        background-color: 	rgba(135,206,230,0.9) !important;
-
+        background-color: rgba(109, 56, 155, 0.9) !important;
     }
 </style>
 <nav class="sb-topnav navbar navbar-expand navbar-light bg-white bg-custom-color shadow-sm" style="height: 65px";>

@@ -6,7 +6,7 @@ include "include/header.php";
 
    .fxt-heading-content .fxt-inner-wrap {
 
-        background-color: 	rgba(135, 206, 235,0.6) !important;
+        background-color: rgba(179, 126, 225, 0.2) !important;
         border-radius: 10px !important;
         /* visibility: hidden !important; */
        
@@ -14,11 +14,14 @@ include "include/header.php";
     }
     .fxt-content-wrap {
 
-        background-image: url('img/login.jpg'); /* Replace with the actual URL of your inner background image */
+        background-image: url('img/login.jpg') !important; 
         background-size: cover;
         background-repeat: no-repeat;
         background-position: center center;
     }
+    .fxt-btn-fill-black-border {
+        border: 1px solid black !important;
+}
     
 </style>
 <div id="preloader" class="preloader">
@@ -46,18 +49,18 @@ include "include/header.php";
         <div class="fxt-form-content">
             <div class="fxt-main-form">
                 <div class="fxt-inner-wrap fxt-opacity fxt-transition-delay-13">
-                    <h2 class="fxt-page-title">Log In</h2>
+                    <h2 class="fxt-page-title" style="color: #FAF9F6;">Log In</h2>
                     <form>
                         <div class="form-group mt-4">
-                            <label for="user_id" class="fxt-label">User Id</label>
+                            <label for="user_id" class="fxt-label" style="color: #FAF9F6;">User Id</label>
                             <input type="text" id="user_id" class="form-control" name="user_id" placeholder="Enter User Id" required="required">
                         </div>
                         <div class="form-group mb-5">
-                            <label for="password" class="fxt-label">Password</label>
+                            <label for="password" class="fxt-label" style="color: #FAF9F6;">Password</label>
                             <input id="password" type="password" class="form-control" name="password" placeholder="Enter Password" required="required">
                         </div>
                         <div class="form-group mb-3">
-                            <button id="submit" class="fxt-btn-fill">Log in</button>
+                            <button id="submit" class="fxt-btn-fill fxt-btn-fill-black-border" style="background-color: rgba(179, 126, 225, 0.2);">Log in</button>
                         </div>
                     </form>
 

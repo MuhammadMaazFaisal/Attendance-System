@@ -14,7 +14,7 @@ if (isset($_SESSION['status']) && $_SESSION['user_access'] == 'Employee') {
             
             <div class="row ml-auto">
                 <div class="col-12 col-md-5 col-lg-4 mt-4">
-                    <div class="card bg-primary text-white" style="height: 150px;">
+                    <div class="card text-white" style="height: 150px; background-color: rgb(170, 62, 152);">
                         <div class="card-body"><span class="h5">My Profile</span>
                         </div>
                         <div class="card-footer d-flex align-items-center justify-content-between">
@@ -24,7 +24,7 @@ if (isset($_SESSION['status']) && $_SESSION['user_access'] == 'Employee') {
                     </div>
                 </div>
                 <div class="col-12 col-md-5 col-lg-4 mt-4">
-                    <div class="card bg-primary text-white" style="height: 150px;">
+                    <div class="card text-white" style="height: 150px; background-color: rgb(222, 180, 225);">
                         <div class="card-body"><span class="h5">Leaves</span>
                         </div>
                         <div class="card-footer d-flex align-items-center justify-content-between">
@@ -34,7 +34,7 @@ if (isset($_SESSION['status']) && $_SESSION['user_access'] == 'Employee') {
                     </div>
                 </div>
                 <div class="col-12 col-md-5 col-lg-4 mt-4 ">
-                    <div class="card bg-primary text-white" style="height: 150px;">
+                    <div class="card text-white" style="height: 150px; background-color: rgb(249, 206, 250);">
                         <div class="card-body"><span class="h5">Apply for Leave</span>
                         </div>
                         <div class="card-footer d-flex align-items-center justify-content-between">
@@ -44,7 +44,7 @@ if (isset($_SESSION['status']) && $_SESSION['user_access'] == 'Employee') {
                     </div>
                 </div>
                 <div class="col-12 col-md-5 col-lg-4 mt-5">
-                    <div class="card bg-primary text-white" style="height: 150px;">
+                    <div class="card text-white" style="height: 150px; background-color: rgb(204, 100, 206);">
                         <div class="card-body"><span class="h5">Attendance</span>
                         </div>
                         <div class="card-footer d-flex align-items-center justify-content-between">
@@ -54,7 +54,7 @@ if (isset($_SESSION['status']) && $_SESSION['user_access'] == 'Employee') {
                     </div>
                 </div>
                 <div class="col-12 col-md-5 col-lg-4 mt-5">
-                    <div class="card bg-primary text-white" style="height: 150px;">
+                    <div class="card text-white" style="height: 150px; background-color: rgb(222, 98, 134);">
                         <div class="card-body"><span class="h5">Attendance Report</span>
                         </div>
                         <div class="card-footer d-flex align-items-center justify-content-between">
@@ -65,7 +65,7 @@ if (isset($_SESSION['status']) && $_SESSION['user_access'] == 'Employee') {
                     </div>
                 </div>
                 <div class="col-12 col-md-5 col-lg-4 mt-5">
-                    <div class="card bg-primary text-white" style="height: 150px;">
+                    <div class="card text-white" style="height: 150px; background-color: rgb(147, 104, 183);">
                         <div class="card-body"><span class="h5">Apply for Adjustment</span>
                         </div>
                         <div class="card-footer d-flex align-items-center justify-content-between">

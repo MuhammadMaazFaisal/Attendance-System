@@ -1580,7 +1580,7 @@ function get_alert(user_id) {
                     if (data[i].read_status == "unread") {
                         div2.classList.add("icon-circle", "bg-danger");
                     } else {
-                        div2.classList.add("icon-circle", "bg-primary");
+                        div2.classList.add("icon-circle", "bg-info");
                     }
                     let i1 = document.createElement("i");
                     i1.classList.add("fas", "fa-envelope", "text-white");
