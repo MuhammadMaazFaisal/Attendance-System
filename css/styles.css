@@ -10468,14 +10468,8 @@ body {
 
 .sb-sidenav-dark {
   /* Permalink - use to edit and share this gradient: https://colorzilla.com/gradient-editor/#213bb2+0,102dab+100 */
-background: rgb(33,59,178); /* Old browsers */
-background: -moz-linear-gradient(45deg,  rgba(33,59,178,1) 0%, rgba(16,45,171,1) 100%); /* FF3.6-15 */
-background: -webkit-linear-gradient(45deg,  rgba(33,59,178,1) 0%,rgba(16,45,171,1) 100%); /* Chrome10-25,Safari5.1-6 */
-background: linear-gradient(45deg,  rgba(33,59,178,1) 0%,rgba(16,45,171,1) 100%); /* W3C, IE10+, FF16+, Chrome26+, Opera12+, Safari7+ */
-filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#213bb2', endColorstr='#102dab',GradientType=1 ); /* IE6-9 fallback on horizontal gradient */
-
-  
-  color: rgba(255, 255, 255, 0.5);
+  opacity: 50%;
+  background-color:black ;
 }
 .sb-sidenav-dark .sb-sidenav-menu .sb-sidenav-menu-heading {
   color: rgba(255, 255, 255, 0.25);

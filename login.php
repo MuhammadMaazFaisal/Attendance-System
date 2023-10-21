@@ -14,7 +14,7 @@ include "include/header.php";
     }
     .fxt-content-wrap {
 
-        background-image: url('img/login.jpg') !important; 
+        background-image: url('img/login.gif') !important; 
         background-size: cover;
         background-repeat: no-repeat;
         background-position: center center;
@@ -60,7 +60,7 @@ include "include/header.php";
                             <input id="password" type="password" class="form-control" name="password" placeholder="Enter Password" required="required">
                         </div>
                         <div class="form-group mb-3">
-                            <button id="submit" class="fxt-btn-fill fxt-btn-fill-black-border" style="background-color: rgba(179, 126, 225, 0.2);">Log in</button>
+                            <button id="submit" class="fxt-btn-fill fxt-btn-fill-black-border" style="background-color: rgba(179, 126, 225, 0.3);">Log in</button>
                         </div>
                     </form>
 

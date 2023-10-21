@@ -344,7 +344,7 @@ function display_employee_data()
 function get_employee_data()
 {
     include "db_connection.php";
-    $sql = "SELECT `user_id`,`employee_name`,`department`,`designation`,`user_status` FROM `users`";
+    $sql = "SELECT `user_id`,`employee_name`,`department`,`designation`,`user_status` FROM `users` where `department`!='Administration'";
     $result = mysqli_query($conn, $sql);
     $array = [];
     $array2 = [];
@@ -453,7 +453,7 @@ function employee_leave_data()
 function get_employees()
 {
     include "db_connection.php";
-    $sql = "SELECT COUNT(*) FROM `users`";
+    $sql = "SELECT COUNT(*) FROM `users` where `user_id`!='admin'";
     $result = mysqli_query($conn, $sql);
     $array = [];
     if ($result->num_rows > 0) {
@@ -463,7 +463,7 @@ function get_employees()
     } else {
         array_push($array, 0);
     }
-    $sql1 = "SELECT COUNT(*) FROM `users` where `user_status`='Active'";
+    $sql1 = "SELECT COUNT(*) FROM `users` where `user_status`='Active' and `user_id`!='admin'";
     $result1 = mysqli_query($conn, $sql1);
     if ($result1->num_rows > 0) {
         while ($row = $result1->fetch_assoc()) {
@@ -892,7 +892,7 @@ function reject()
 function get_department()
 {
     include "db_connection.php";
-    $sql = "SELECT DISTINCT(`department`) FROM `users`";
+    $sql = "SELECT DISTINCT(`department`) FROM `users` where `department`!='Administration'";
     $result = mysqli_query($conn, $sql);
     $array = [];
     if ($result->num_rows > 0) {
@@ -909,7 +909,7 @@ function get_employees_by_department()
 {
     include "db_connection.php";
     $department = $_POST["department"];
-    $sql = "SELECT * FROM `users` where `department`='$department'";
+    $sql = "SELECT * FROM `users` where `department`='$department' and `department`!='Administration'";
     $result = mysqli_query($conn, $sql);
     $array = [];
     if ($result->num_rows > 0) {
@@ -925,7 +925,7 @@ function get_employees_by_department()
 function get_all_employees()
 {
     include "db_connection.php";
-    $sql = "SELECT * FROM `users`";
+    $sql = "SELECT * FROM `users` where `department`!='Administration'";
     $result = mysqli_query($conn, $sql);
     $array = [];
     if ($result->num_rows > 0) {
@@ -1359,7 +1359,7 @@ function get_employee_data_by_search()
     include "db_connection.php";
     $user_id = $_POST['employee_id'];
 
-    $sql = "SELECT `user_id`,`employee_name`,`department`,`designation`,`user_status` FROM `users` WHERE `user_id`='$user_id'";
+    $sql = "SELECT `user_id`,`employee_name`,`department`,`designation`,`user_status` FROM `users` WHERE `user_id`='$user_id' and `department`!='Administration'";
     $result = mysqli_query($conn, $sql);
     $array = [];
     $array2 = [];

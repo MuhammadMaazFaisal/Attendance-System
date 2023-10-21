@@ -12,9 +12,11 @@
 
     }
 
-    .sb-sidenav-menu {
-        background-color: rgba(109, 56, 155, 1.5) !important;
-    }
+    /* .sb-sidenav-menu {
+        background-image: url('img/loginside.gif') !important; 
+       
+
+    } */
 
 </style>
 <div id="layoutSidenav">
