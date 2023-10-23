@@ -1267,7 +1267,7 @@ function get_alerts()
     } else {
         array_push($array, "No data found");
     }
-    $sql = "SELECT * FROM `alert` WHERE `user_id`='$user_id'  ORDER BY `a_id` DESC LIMIT 10";
+    $sql = "SELECT * FROM `alert` WHERE `user_id`='$user_id' AND `read_status`='unread' ORDER BY `a_id` DESC LIMIT 10";
     $result = mysqli_query($conn, $sql);
     if ($result->num_rows > 0) {
         while ($row = $result->fetch_assoc()) {
