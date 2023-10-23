@@ -10468,11 +10468,10 @@ body {
 
 .sb-sidenav-dark {
   /* Permalink - use to edit and share this gradient: https://colorzilla.com/gradient-editor/#213bb2+0,102dab+100 */
-  opacity: 50%;
-  background-color:black ;
+  background-color: rgba(0, 0, 0, 0.5);
 }
 .sb-sidenav-dark .sb-sidenav-menu .sb-sidenav-menu-heading {
-  color: rgba(255, 255, 255, 0.25);
+  color: rgba(255, 255, 255, 0.9) !important;
 }
 .sb-sidenav-dark .sb-sidenav-menu .nav-link {
   color: rgba(255, 255, 255, 0.7);
