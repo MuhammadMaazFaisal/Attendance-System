@@ -178,7 +178,7 @@ function add_employee()
             $time_out = $_POST["time_out"];
             $time_in = date('h:i:sa', strtotime($time_in));
             $time_out = date('h:i:sa', strtotime($time_out));
-            $barcode = $_POST["barcode"];
+            // $barcode = $_POST["barcode"];
 
             $user_id = "ET";
 
@@ -223,7 +223,7 @@ function add_employee()
             }
             $user_id .= $count;
 
-            $sql = "INSERT INTO `users`(`user_id`,`employee_name`, `department`, `gender`, `email`, `current_address`, `user_access`, `password`, `designation`, `joining_date`, `qualification`, `contact_number`, `cnic`, `date_of_birth`, `martial_status`,`user_image`,`user_shift`,`user_status`,`time_in`,`time_out`,`barcode`) VALUES('$user_id','$employee_name','$department','$gender','$email','$current_address','$user_access','$password','$designation','$joining_date','$qualification','$contact_number','$cnic','$date_of_birth','$martial_status', '$path','$user_shift','$user_status','$time_in','$time_out','$barcode')";
+            $sql = "INSERT INTO `users`(`user_id`,`employee_name`, `department`, `gender`, `email`, `current_address`, `user_access`, `password`, `designation`, `joining_date`, `qualification`, `contact_number`, `cnic`, `date_of_birth`, `martial_status`,`user_image`,`user_shift`,`user_status`,`time_in`,`time_out`) VALUES('$user_id','$employee_name','$department','$gender','$email','$current_address','$user_access','$password','$designation','$joining_date','$qualification','$contact_number','$cnic','$date_of_birth','$martial_status', '$path','$user_shift','$user_status','$time_in','$time_out')";
             if ($conn->query($sql) === true) {
                 echo "Employee Added Successfully";
             } else {
@@ -1666,7 +1666,7 @@ function PrintSetter()
     $array = array();   
     
     
-    $user_id =$_POST["user_id"];
+    $user_id =$_POST["employee_id"];
    
     $getRecordQuery = "SELECT `user_id`,`employee_name` FROM `users` WHERE `user_id`='$user_id'";
     

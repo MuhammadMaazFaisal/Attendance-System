@@ -37,7 +37,7 @@ if (isset($_SESSION['status']) && $_SESSION['user_access'] == 'Administrator') {
                                                 <div class="col-md-6">
                                                     <div class="form-group">
                                                         <label>Employee Name *</label>
-                                                        <input id="employee_name" name="employee_name" type="text" class="form-control" placeholder="First Name" required>
+                                                        <input id="employee_name" name="employee_name" type="text" class="form-control" placeholder="Full Name" required>
                                                     </div>
                                                 </div>
                                                 <div class="col-md-6">
@@ -205,28 +205,28 @@ if (isset($_SESSION['status']) && $_SESSION['user_access'] == 'Administrator') {
                                                 </div>
                                             </div>
                                         </div>
-                                        <div class="col-md-4">
+                                        <!-- <div class="col-md-4">
                                             <div class="form-group">
                                                 <label>Barcode</label>
                                                 <input id="barcode" name="barcode" type="text" class="form-control" placeholder="" aria-label="Example text with button addon" aria-describedby="button-addon1" readonly>
                                             </div>
-                                        </div>
-                                        <div class="col-md-4">
+                                        </div> -->
+                                        <!-- <div class="col-md-4">
                                             <div class="form-group">
                                                 <label>Action</label>
                                                 <div>
                                                     <button class="btn btn-outline-secondary" type="button" id="button-addon1" onclick="GenerateBarcode(this)">B/C</button>
                                                 </div>
                                             </div>
-                                        </div>
-                                        <div class="col-md-4">
+                                        </div> -->
+                                        <!-- <div class="col-md-4">
                                             <div class="form-group">
-                                                <label>Print Barcode</label>
+                                                <label>Generate Barcode</label>
                                                 <div>
                                                     <button class="btn btn-outline-secondary" type="button" id="button-addon1" onclick="PrintSetter($('#user_id').val())">Print</button>
                                                 </div>
                                             </div>
-                                        </div>
+                                        </div> -->
                                     </div>
                                     <!-- /row-->
 

@@ -350,6 +350,97 @@ function view_user(employee_id) {
     });
 }
 
+function PrintSetter(employee_id) {
+
+
+    $.ajax({
+        url: "include/functions.php",
+        type: "POST",
+        data: {
+            action: "PrintSetter",
+           employee_id: employee_id
+            
+        },
+        success: function(data) {
+           console.log(data);
+            data = JSON.parse(data);
+            let printWindow = window.open("", "_blank");
+            // Generate slip content
+            let slipContent = `
+       <!DOCTYPE html>
+       <html>
+       <head>
+       <style>
+           @media print {
+               @page {
+                   size: 80mm 200mm;
+                   margin: 0;
+               }
+
+               body {
+                   font-family: Arial, sans-serif;
+                   font-size: 12px;
+                   padding: 10px;
+               }
+
+               h1 {
+                   font-size: 16px;
+                   text-align: center;
+                   margin: 10px 0;
+                   color: #333;
+               }
+
+               p {
+                   margin-bottom: 5px;
+               }
+
+               .label {
+                   font-weight: bold;
+               }
+           }
+       </style>
+       </head>
+       <body>
+       <p><span class="label" style="margin-right:6px;">Barcode:</span><span>${data[0].user_id}</span></p>
+       <p><span class="label" style="margin-right:6px;">Name:</span><span>${data[0].employee_name}</span></p>
+       <svg id="barcode"></svg>
+       <script src="https://cdnjs.cloudflare.com/ajax/libs/jsbarcode/3.11.5/JsBarcode.all.js" integrity="sha512-wkHtSbhQMx77jh9oKL0AlLBd15fOMoJUowEpAzmSG5q5Pg9oF+XoMLCitFmi7AOhIVhR6T6BsaHJr6ChuXaM/Q==" crossorigin="anonymous" referrerpolicy="no-referrer"><\/script>
+       <script>
+   // Function to render barcode
+   function renderBarcode() {
+       const barcodeElement = document.getElementById("barcode");
+       if (barcodeElement) {
+           JsBarcode(barcodeElement, "${data[0].user_id}", {
+               format: "CODE128",
+               width: 2,
+               height: 50,
+           });
+           window.print();
+       } else {
+           // Barcode element not found, retry after a short delay
+           setTimeout(renderBarcode, 100);
+       }
+   }
+
+   // Start rendering barcode
+   renderBarcode();
+<\/script>
+</body>
+</html>
+   `;
+
+            // Write slip content to the new tab
+            printWindow.document.open();
+            printWindow.document.write(slipContent);
+            // printWindow.print();
+            printWindow.document.close();
+
+
+        }
+    });
+}
+
+
 function view_attendance(id) {
 
     let month = document.getElementById("month").value;
@@ -835,7 +926,10 @@ function get_employees_by_department(department) {
                 let td3 = document.createElement("td");
                 let td4 = document.createElement("td");
                 let td5 = document.createElement("td");
+                let td6 = document.createElement("td");
+
                 let view_btn = document.createElement("button");
+                let barcode = document.createElement("button");
                 td1.innerHTML = data[i].user_id;
                 td2.innerHTML = data[i].employee_name;
                 td3.innerHTML = data[i].department;
@@ -847,11 +941,17 @@ function get_employees_by_department(department) {
                 view_btn.setAttribute("id", data[i].user_id);
                 view_btn.setAttribute("onclick", "view_user(this.id)");
                 td4.appendChild(view_btn);
+                barcode.innerHTML = "Generate Barcode";
+                barcode.className = "btn btn-success";
+                barcode.setAttribute("id", data[i].user_id);
+                barcode.setAttribute("onclick", "PrintSetter(this.id)");
+                td6.appendChild(barcode);
                 tr.appendChild(td1);
                 tr.appendChild(td2);
                 tr.appendChild(td3);
                 tr.appendChild(td5);
                 tr.appendChild(td4);
+                tr.appendChild(td6);
                 tbody.appendChild(tr);
             }
         }
@@ -876,7 +976,9 @@ function get_all_employees() {
                 let td3 = document.createElement("td");
                 let td4 = document.createElement("td");
                 let td5 = document.createElement("td");
+                let td6 = document.createElement("td");
                 let view_btn = document.createElement("button");
+                let barcode = document.createElement("button");
                 td1.innerHTML = data[i].user_id;
                 td2.innerHTML = data[i].employee_name;
                 td3.innerHTML = data[i].department;
@@ -888,11 +990,17 @@ function get_all_employees() {
                 view_btn.setAttribute("id", data[i].user_id);
                 view_btn.setAttribute("onclick", "view_user(this.id)");
                 td4.appendChild(view_btn);
+                barcode.innerHTML = "Generate Barcode";
+                barcode.className = "btn btn-success";
+                barcode.setAttribute("id", data[i].user_id);
+                barcode.setAttribute("onclick", "PrintSetter(this.id)");
+                td6.appendChild(barcode);
                 tr.appendChild(td1);
                 tr.appendChild(td2);
                 tr.appendChild(td3);
                 tr.appendChild(td5);
                 tr.appendChild(td4);
+                tr.appendChild(td6);
                 tbody.appendChild(tr);
             }
         }
