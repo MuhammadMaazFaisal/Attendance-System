@@ -145,6 +145,7 @@ if (isset($_SESSION['status']) && $_SESSION['user_access'] == 'Administrator') {
                                         <th scope="col">Time Out</th>
                                         <th scope="col">Status Out</th>
                                         <th scope="col">Status</th>
+                                        <th scope="col">Hours</th>
                                     </tr>
                                 </thead>
                                 <tbody id="table_body">

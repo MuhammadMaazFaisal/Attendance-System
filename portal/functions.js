@@ -20,9 +20,11 @@ $(document).ready(function () {
             action: "insert",
             id: id,
           },
+
           success: function (data) {
             display(id);
             modal(id);
+           
             // Clear the input field after displaying the results
             $("#input").val(""); // Clear the input field
           },
@@ -32,17 +34,26 @@ $(document).ready(function () {
   });
 
   function display(a) {
-    console.log("after function");
-    console.log(a);
     $.ajax({
-      type: "Post",
-      url: "result.php",
-      data: { a: a },
-      success: function (data) {
-        $("#table-container").html(data);
+      type: "POST",
+      url: "../include/functions.php",
+      data: {
+        action: "add_hours",
+        a: a,
       },
+      success: function (data) {
+        $.ajax({
+          type: "Post",
+          url: "result.php",
+          data: { a: a },
+          success: function (data) {
+            $("#table-container").html(data);
+          },
+        });
+      }
     });
   }
+  
 
   function modal(id) {
     console.log(id);
