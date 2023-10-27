@@ -1645,7 +1645,7 @@ function get_attendance_data(user_id, month1, year1) {
             for (let i = 0; i < all_td.length; i++) {
                 let td = array[count];
                 if (count < array.length) {
-                    if (data[count].Status == "Late" || data[count].Signout_Status == "Early Going") {
+                    if (data[count].Status == "Late" || data[count].Signout_Status == "Half day") {
                         all_td[td].classList.add("table-primary");
                         all_td[td].classList.remove("table-dark");
                         count++;

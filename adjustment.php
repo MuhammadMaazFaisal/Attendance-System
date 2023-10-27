@@ -19,7 +19,7 @@ if (isset($_SESSION['status']) && $_SESSION['user_access'] == 'Administrator') {
                     </ol>
                 </div>
                 <div class="col-12 col-md-3 my-3 border border-secondary rounded ml-auto">
-                    <div class="row mx-2 mt-4">
+                    <div class="row mx-2 mt-2">
                         <span class="font-weight-bold">Adjustments Applied: </span><span id="total_adjustments"
                             class="mx-2"></span>
                     </div>
@@ -41,7 +41,7 @@ if (isset($_SESSION['status']) && $_SESSION['user_access'] == 'Administrator') {
             <div class="card mb-4 mr-5">
 
                 <div class="card-body row d-flex justify-content-end">
-                    <div class="form-group col-4 col-md-2 col-lg-1">
+                    <div class="form-group col-5 col-md-2 col-lg-1">
                         <label>Day</label>
                         <div>
                             <select id="day" name="day" class="custom-select">

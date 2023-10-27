@@ -41,7 +41,7 @@
                                 </div>
                             </div>
                             <div class="col-12 col-md-5 col-lg-4 mt-4">
-                                <div class="card text-white" style="height: 150px; background-color: rgba(222, 180, 225,0.6);">
+                                <div class="card text-white" style="height: 150px; background-color: rgba(232, 170, 225,0.8);">
                                     <div class="card-body"><span class="h5">Leaves</span>
                                     </div>
                                     <div class="card-footer d-flex align-items-center justify-content-between">
@@ -51,7 +51,7 @@
                                 </div>
                             </div>
                             <div class="col-12 col-md-5 col-lg-4 mt-4 ">
-                                <div class="card text-white" style="height: 150px; background-color: rgba(249, 206, 250,0.6);">
+                                <div class="card text-white" style="height: 150px; background-color: rgba(60, 70, 200, 0.7);">
                                     <div class="card-body"><span class="h5">Apply for Leave</span>
                                     </div>
                                     <div class="card-footer d-flex align-items-center justify-content-between">
@@ -61,7 +61,7 @@
                                 </div>
                             </div>
                             <div class="col-12 col-md-5 col-lg-4 mt-5">
-                                <div class="card text-white" style="height: 150px; background-color: rgba(204, 100, 206,0.6);">
+                                <div class="card text-white" style="height: 150px; background-color: rgba(204, 100, 206, 0.7);">
                                     <div class="card-body"><span class="h5">Attendance</span>
                                     </div>
                                     <div class="card-footer d-flex align-items-center justify-content-between">
@@ -71,7 +71,7 @@
                                 </div>
                             </div>
                             <div class="col-12 col-md-5 col-lg-4 mt-5">
-                                <div class="card text-white" style="height: 150px; background-color: rgba(222, 98, 134,0.6);">
+                                <div class="card text-white" style="height: 150px; background-color: rgba(161, 114, 203, 0.7);">
                                     <div class="card-body"><span class="h5">Attendance Report</span>
                                     </div>
                                     <div class="card-footer d-flex align-items-center justify-content-between">
@@ -82,7 +82,7 @@
                                 </div>
                             </div>
                             <div class="col-12 col-md-5 col-lg-4 mt-5">
-                                <div class="card text-white" style="height: 150px; background-color: rgba(147, 104, 183,0.6);">
+                                <div class="card text-white" style="height: 150px; background-color: rgb(147, 104, 183);">
                                     <div class="card-body"><span class="h5">Apply for Adjustment</span>
                                     </div>
                                     <div class="card-footer d-flex align-items-center justify-content-between">

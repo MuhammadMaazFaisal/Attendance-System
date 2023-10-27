@@ -47,7 +47,7 @@ if (isset($_SESSION['status']) && $_SESSION['user_access'] == 'Administrator') {
                     <option value="2025">2025</option>
                     <option value="2026">2026</option>
                 </select>
-                <input type="text" class="form-control col-5 col-md-2 col-lg-1 m-1" id="s_employee_id"
+                <input type="text" class="form-control col-5 col-md-2 col-lg-2 m-1" id="s_employee_id"
                     placeholder="Employee ID">
                 <button class="btn btn-primary col-5 col-md-2 col-lg-1 m-1" id="search">Search</button>
 

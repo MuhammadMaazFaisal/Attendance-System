@@ -15,7 +15,7 @@ if (isset($_SESSION['status']) && $_SESSION['user_access'] == 'Administrator') {
                     <li class="breadcrumb-item"><a href="index.php">Dashboard</a></li>
                     <li class="breadcrumb-item active">Edit Employee</li>
                 </ol>
-                <div class="col-6 col-md-2 col-lg-2">
+                <div class="col-6 col-md-2 col-lg-3">
                     <div class="form-group">
                         <label>Employee Name</label>
                         <div>

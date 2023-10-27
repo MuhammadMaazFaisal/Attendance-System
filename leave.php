@@ -19,7 +19,7 @@ if (isset($_SESSION['status']) && $_SESSION['user_access'] == 'Administrator') {
                     </ol>
                 </div>
                 <div class="col-12 col-md-3 my-3 border border-secondary rounded ml-auto">
-                    <div class="row mx-2 mt-4">
+                    <div class="row mx-2 mt-2">
                         <span class="font-weight-bold">Leaves Applied: </span><span id="total_leaves"
                             class="mx-2"></span>
                     </div>

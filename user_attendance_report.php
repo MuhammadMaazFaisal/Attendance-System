@@ -19,7 +19,7 @@ if (isset($_SESSION['status']) && $_SESSION['user_access'] == 'Employee') {
                 <li class="breadcrumb-item active">Attendance Report</li>
             </ol>
             <div class="row mb-3 ml-3">
-                <select class="custom-select col-5 col-md-2 col-lg-1 m-1" id='month'
+                <select class="custom-select col-5 col-md-2 col-lg-2 m-1" id='month'
                     aria-label="Default select example">
                     <option selected value="month">Month</option>
                     <option value="01">Janurary</option>
@@ -37,7 +37,7 @@ if (isset($_SESSION['status']) && $_SESSION['user_access'] == 'Employee') {
                 </select>
 
 
-                <select class="custom-select col-5 col-md-2 col-lg-1 m-1" id='year' aria-label="Default select example">
+                <select class="custom-select col-5 col-md-2 col-lg-2 m-1" id='year' aria-label="Default select example">
                     <option selected value="year">Year</option>
                     <option value="2020">2020</option>
                     <option value="2021">2021</option>
