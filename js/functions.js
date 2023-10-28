@@ -1341,6 +1341,7 @@ function apply_for_adjustment(selector, adjustment_date, adjustment_reason) {
             data: {
                 action: "adjustment_form",
                 employee_id: employee_id,
+                employee_name: employee_name,
                 adjustment_type: selector,
                 adjustment_date: adjustment_date,
                 adjustment_reason: adjustment_reason

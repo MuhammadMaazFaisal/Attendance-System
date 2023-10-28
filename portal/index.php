@@ -15,7 +15,7 @@
     }
 
     h1 {
-      font-family: "Segoe UI", Arial, sans-serif !important;
+      font-family: Georgia, serif !important;
       font-style: normal;
       font-weight: 900%;
       height: 24px;
@@ -31,7 +31,7 @@
 
 
     .p {
-      font-family: "Segoe UI", Arial, sans-serif !important;
+      font-family: "Fredoka One", cursive !important;
       font-style: normal;
       font-weight: 500;
       height: 24px;
@@ -243,6 +243,9 @@
 
       });
     </script>
+    <style>
+  
+</style>
 
 </body>
 

@@ -385,7 +385,7 @@ function all_leave_data()
 {
     include "db_connection.php";
     $date = $_POST["date"];
-    $sql = "SELECT * FROM `leaves` where `date`='$date'";
+    $sql = "SELECT * FROM `leaves` where `date`='$date' and `status`='Pending'";
     $result = mysqli_query($conn, $sql);
     $array = [];
     if ($result->num_rows > 0) {
@@ -1104,7 +1104,7 @@ function all_adjustment_data()
 {
     include "db_connection.php";
     $date = $_POST["date"];
-    $sql = "SELECT * FROM `adjustment` where `requested_on`='$date'";
+    $sql = "SELECT * FROM `adjustment` where `requested_on`='$date' and `status`='Pending'";
     $result = mysqli_query($conn, $sql);
     $array = [];
     if ($result->num_rows > 0) {
@@ -1158,11 +1158,12 @@ function adjustment_form()
     include 'db_connection.php';
     $array = [];
     $employee_id = $_POST['employee_id'];
+    $employee_name = $_POST['employee_name'];
     $adjustment_type = $_POST['adjustment_type'];
     $adjustment_date = date("d/m/Y", strtotime($_POST['adjustment_date']));
     $adjustment_reason = $_POST['adjustment_reason'];
     $requested_on = date("d/m/Y");
-    $sql = "INSERT INTO `adjustment`(`user_id`, `adjustment_type`, `adjustment_date`, `adjustment_reason`, `requested_on`,`status`) VALUES ('$employee_id','$adjustment_type','$adjustment_date','$adjustment_reason','$requested_on','Pending')";
+    $sql = "INSERT INTO `adjustment`(`user_id`, `adjustment_type`, `adjustment_date`, `adjustment_reason`, `requested_on`,`status`,`employee_name`) VALUES ('$employee_id','$adjustment_type','$adjustment_date','$adjustment_reason','$requested_on','Pending','$employee_name')";
     if ($conn->query($sql) == true) {
         array_push($array, "success");
     } else {
@@ -1192,7 +1193,7 @@ function show_leaves()
 {
     include "db_connection.php";
 
-    $sql = "SELECT * FROM `leaves`ORDER BY leave_id DESC LIMIT 10";
+    $sql = "SELECT * FROM `leaves` where `status`='Pending' ORDER BY leave_id DESC LIMIT 10";
     $result = mysqli_query($conn, $sql);
     $array = [];
     if ($result->num_rows > 0) {
@@ -1210,24 +1211,12 @@ function show_adjustments()
 {
     include "db_connection.php";
 
-    $sql = "SELECT * FROM `adjustment`ORDER BY adjustment_id DESC LIMIT 10";
+    $sql = "SELECT * FROM `adjustment` where `status`='Pending' ORDER BY adjustment_id DESC LIMIT 10";
     $result = mysqli_query($conn, $sql);
     $array = [];
     if ($result->num_rows > 0) {
         while ($row = $result->fetch_array()) {
             array_push($array, $row);
-        }
-    } else {
-        array_push($array, "No data found");
-    }
-
-    $employee_id = $array[0][1];
-
-    $sql2 = "SELECT employee_name FROM `users` where `user_id`='$employee_id'";
-    $result2 = mysqli_query($conn, $sql2);
-    if ($result2->num_rows > 0) {
-        while ($row = $result2->fetch_assoc()) {
-            $array[0]["employee_name"] = $row['employee_name'];
         }
     } else {
         array_push($array, "No data found");
@@ -1632,7 +1621,7 @@ function add_hours()
         } else {
             echo "Failed to update hours: " . mysqli_error($conn);
         }
-    } else if ($ID == "$user_id"){
+    } else if ($activity == "Signed Out" && $ID == "$user_id"){
         date_default_timezone_set('Asia/karachi'); // Replace 'Your_Timezone' with your actual timezone
 
         $today = date("Y-m-d");

@@ -126,6 +126,7 @@ include "include/footer.php";
 
 <script>
 let employee_id = "<?php echo $_SESSION['user_id']; ?>";
+let employee_name = "<?php echo $_SESSION['user_name']; ?>";
 
 $(document).ready(function() {
     load_user_adjustment_page(employee_id);
