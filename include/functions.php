@@ -102,6 +102,8 @@ if ($_POST["action"] == "login") {
     PrintSetter2();
 } elseif ($_POST["action"] == "add_hours") {
     add_hours();
+} elseif ($_POST["action"] == "absent") {
+    absent();
 }
 
 function logout()
@@ -954,7 +956,7 @@ function get_monthly_data()
     $employee_id = $_POST['employee_id'];
     $array = [];
 
-    $sql20 = "SELECT count(attendance) FROM `signin` WHERE `user_id`='$employee_id' AND `Date` LIKE'%, $year' AND `Date` LIKE'$month,%' AND `attendance`='Absent'or `attendance`='Present' ";
+    $sql20 = "SELECT count(attendance) FROM `signin` WHERE `user_id`='$employee_id' AND `Date` LIKE'%, $year' AND `Date` LIKE'$month,%' AND `attendance`='Present' or `attendance`='Absent' ";
     $result20 = mysqli_query($conn, $sql20);
     if ($result20->num_rows > 0) {
         while ($row = $result20->fetch_assoc()) {
@@ -990,8 +992,8 @@ function get_monthly_data()
     if ($result7->num_rows > 0) {
         while ($row = $result7->fetch_assoc()) {
             if ($row['Signin'] < "06:00:00am") {
-                $time_in = strtotime("11/1/2011" . $row['Signin']);
-                $time_out = strtotime("11/2/2011" . $row['Signout']);
+                $time_in = strtotime("11/1/2011 " . $row['Signin']);
+                $time_out = strtotime("11/2/2011 " . $row['Signout']);
             } else {
                 $time_in = strtotime($row['Signin']);
                 $time_out = strtotime($row['Signout']);
@@ -1001,7 +1003,7 @@ function get_monthly_data()
         }
 
         $hours = floor($total / 3600);
-        $mins = floor($total / 60 % 60);
+        $mins = floor(($total % 3600) / 60);
         array_push($array, "$hours hours $mins minutes");
     } else {
         array_push($array, "0 hours");
@@ -1040,13 +1042,14 @@ function get_monthly_data()
     $official_diff = $official_diff * $array[0];
     if ($official_diff < $total) {
         $official_diff = $total - $official_diff;
-        $official_hours = floor($official_diff / 3600);
-        $official_mins = floor($official_diff / 60 % 60);
+        $official_hours = (int)floor($official_diff / 3600);
+        $official_mins = (int)floor($official_diff / 60 % 60);
         $official_time = $official_hours . " hours " . $official_mins . " minutes";
         array_push($array, $official_time);
     } else {
         array_push($array, "0 hours 0 minutes");
     }
+
 
     echo json_encode($array);
 }
@@ -1517,7 +1520,7 @@ function insert()
     if ($activity == "Signed in" and $date == $curr_date and $sign_in >= "09:00:00pm") {
 
         $emparr = [];
-        $sqlll = "SELECT * FROM `users` where user_status='Active   '";
+        $sqlll = "SELECT * FROM `users` where user_status='Active'";
         $query = mysqli_query($conn, $sqlll) or die("Query Unsuccessful");
         while ($row = mysqli_fetch_assoc($query)) {
 
@@ -1584,6 +1587,8 @@ function add_hours()
     $activity = $str3;
     $user_id = $str4;
 
+
+
     if ($activity == "Signed Out" && $ID != "ETPDJD001" && $ID != "ETPDJD003" && $ID != "ETPDJD004" && $ID != "ETPSSM005" && $ID == "$user_id") {
 
         date_default_timezone_set('Asia/karachi'); // Replace 'Your_Timezone' with your actual timezone
@@ -1608,7 +1613,7 @@ function add_hours()
         if ($hours < "7:0:0" && $hours > "5:0:0") {
             $sql5 = "UPDATE `signin` SET `Signout_Status`='Early going' where `user_id`='$ID'";
             $result = mysqli_query($conn, $sql5);
-        } else if ($hours < "5:0:0" && $activity == "Signed Out" ) {
+        } else if ($hours < "5:0:0" && $activity == "Signed Out") {
             $sql6 = "UPDATE `signin` SET `Signout_Status`='Half day' where `user_id`='$ID'";
             $result = mysqli_query($conn, $sql6);
         } else if ($hours > "8:0:0" && $activity == "Signed Out") {
@@ -1621,7 +1626,7 @@ function add_hours()
         } else {
             echo "Failed to update hours: " . mysqli_error($conn);
         }
-    } else if ($activity == "Signed Out" && $ID == "$user_id"){
+    } else if ($activity == "Signed Out" && $ID == "$user_id") {
         date_default_timezone_set('Asia/karachi'); // Replace 'Your_Timezone' with your actual timezone
 
         $today = date("Y-m-d");
@@ -1657,9 +1662,49 @@ function add_hours()
         } else {
             echo "Failed to update hours: " . mysqli_error($conn);
         }
-
     }
 }
+
+
+function absent()
+{
+    include 'db_connection.php';
+
+    $array = array();
+
+    // Check if the current time is after 12 am (midnight)
+    date_default_timezone_set('Asia/Karachi');
+    $current_time = date("H:i:s");
+    $date = date("n, j, Y");
+
+    if (strtotime($current_time) >= strtotime("00:00:00") && strtotime($current_time) < strtotime("12:00:00")) {
+        $getRecordQuery = "SELECT u.`user_id`, u.`employee_name`
+            FROM `users` AS u
+            WHERE u.`user_status` = 'Active' AND u.`user_access` = 'Employee'
+            AND NOT EXISTS (
+                SELECT 1
+                FROM `signin` AS s
+                WHERE u.`user_id` = s.`user_id`
+                AND s.`Date` = '$date'
+            )";
+
+        $query_users = mysqli_query($conn, $getRecordQuery) or die("Query Unsuccessful");
+
+        while ($row = mysqli_fetch_assoc($query_users)) {
+            $user_id1 = $row['user_id'];
+            $employee_name1 = $row['employee_name'];
+            $sql69 = "INSERT INTO `signin`(`user_id`,`Name`,`Signin`,`Status`,`Signout_Status`,`Signout`,`activity`,`Date`,`attendance`,`hours`) VALUES ('$user_id1','$employee_name1','-','-','-','-','-','$date','Absent','-')";
+            $result = mysqli_query($conn, $sql69);
+
+            if ($result) {
+                echo "Absent record inserted successfully for employees who entered after 12 am.";
+            } else {
+                echo "Failed to insert absent record: " . mysqli_error($conn);
+            }
+        }
+    }
+}
+
 
 function fetch_data()
 {

@@ -24,6 +24,9 @@ $(document).ready(function () {
           success: function (data) {
             display(id);
             modal(id);
+            absent();
+            
+            
            
             // Clear the input field after displaying the results
             $("#input").val(""); // Clear the input field
@@ -50,6 +53,20 @@ $(document).ready(function () {
             $("#table-container").html(data);
           },
         });
+      }
+    });
+  }
+
+  function absent() {
+    $.ajax({
+      type: "POST",
+      url: "../include/functions.php",
+      data: {
+        action: "absent",
+        
+      },
+      success: function (data) {
+       console.log(data);
       }
     });
   }

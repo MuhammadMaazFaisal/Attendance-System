@@ -15,9 +15,7 @@ include "include/header.php";
     .fxt-content-wrap {
 
         background-image: url('img/login.gif') !important; 
-        /* background-size: cover;
-        background-repeat: no-repeat;
-        background-position: center center; */
+        
     }
     .fxt-btn-fill-black-border {
         border: 1px solid black !important;
