@@ -801,7 +801,7 @@ function calendar()
     $ok = "2022";
     $year = $_POST['year'];
     $month = $_POST['month'];
-    date_default_timezone_set('Asia/Tokyo');
+    date_default_timezone_set("Asia/karachi");
     $ym = ($year . '-' . $month);
 
     // Check format
@@ -956,7 +956,7 @@ function get_monthly_data()
     $employee_id = $_POST['employee_id'];
     $array = [];
 
-    $sql20 = "SELECT count(attendance) FROM `signin` WHERE `user_id`='$employee_id' AND `Date` LIKE'%, $year' AND `Date` LIKE'$month,%' AND `attendance`='Present' or `attendance`='Absent' ";
+    $sql20 = "SELECT count(attendance) FROM `signin` WHERE `user_id`='$employee_id' AND `Date` LIKE'%, $year' AND `Date` LIKE'$month,%' AND (`attendance`='Present' OR `attendance`='Absent')";
     $result20 = mysqli_query($conn, $sql20);
     if ($result20->num_rows > 0) {
         while ($row = $result20->fetch_assoc()) {
@@ -987,27 +987,36 @@ function get_monthly_data()
     }
 
     $sql7 = "SELECT * FROM `signin` WHERE `user_id`='$employee_id' AND `Date` LIKE'%, $year' AND `Date` LIKE'$month,%' AND `attendance`='Present'";
-    $result7 = mysqli_query($conn, $sql7);
-    $total = 0;
-    if ($result7->num_rows > 0) {
-        while ($row = $result7->fetch_assoc()) {
-            if ($row['Signin'] < "06:00:00am") {
-                $time_in = strtotime("11/1/2011 " . $row['Signin']);
-                $time_out = strtotime("11/2/2011 " . $row['Signout']);
-            } else {
-                $time_in = strtotime($row['Signin']);
-                $time_out = strtotime($row['Signout']);
-            }
-            $diff = $time_out - $time_in;
-            $total += $diff;
-        }
+    $query2 = mysqli_query($conn, $sql7);
+    $totalOvertime = 0;
 
-        $hours = floor($total / 3600);
-        $mins = floor(($total % 3600) / 60);
-        array_push($array, "$hours hours $mins minutes");
-    } else {
-        array_push($array, "0 hours");
+    if ($query2->num_rows > 0) {
+        while ($row = $query2->fetch_assoc()) {
+            if ($row['hours'] === null) {
+                // If overtime value is NULL, consider it as 0
+                $overtimeInSeconds = 0;
+            } else {
+                // Parse the overtime value in the format %H:%i:%s
+                list($hours, $minutes, $seconds) = explode(":", $row['hours']);
+                
+                $overtimeInSeconds = $hours * 3600 + $minutes * 60 + $seconds;
+            }
+
+            $totalOvertime += $overtimeInSeconds;
+        }
     }
+
+    // Convert the totalOvertime from seconds to a formatted string
+    $totalOvertimeHours = floor($totalOvertime / 3600);
+    $totalOvertimeMinutes = floor(($totalOvertime % 3600) / 60);
+    $totalOvertimeSeconds = $totalOvertime % 60;
+
+    $totalOvertimeFormatted = "$totalOvertimeHours hours $totalOvertimeMinutes minutes $totalOvertimeSeconds seconds";
+
+    // Now, $totalOvertimeFormatted contains the sum of overtime for all records in the specified month and year
+
+    array_push($array, $totalOvertimeFormatted);
+
 
     $sql10 = "SELECT count(employee_name) FROM `leaves` WHERE `user_id`='$employee_id' AND `Date` LIKE'%, $year' AND `Date` LIKE'$month,%' AND `status`='Approved'";
     $result10 = mysqli_query($conn, $sql10);
@@ -1021,34 +1030,40 @@ function get_monthly_data()
 
     array_push($array, (2 - $array[4]));
 
-    $sql8 = "SELECT * FROM `users` WHERE `user_id`='$employee_id'";
-    $result8 = mysqli_query($conn, $sql8);
-    $official_diff = 0;
-    if ($result8->num_rows > 0) {
-        while ($row = $result8->fetch_assoc()) {
-            $official_timeIn = $row['time_in'];
-            if ($row['time_out'] < "06:00:00am") {
-                $official_timeOut = strtotime("11/2/2011 " . $row['time_out']);
-                $official_timeIn = strtotime("11/1/2011 " . $row['time_in']);
-                $official_diff = $official_timeOut - $official_timeIn;
+
+    $sql8 = "SELECT * FROM `signin` WHERE `user_id`='$employee_id' AND `Date` LIKE'%, $year' AND `Date` LIKE'$month,%' AND `Signout_Status` = 'Over Time'";
+    $query = mysqli_query($conn, $sql8) or die("Query Unsuccessful");
+
+    $totalOvertime = 0;
+
+    if ($query->num_rows > 0) {
+        while ($row = $query->fetch_assoc()) {
+            if ($row['overtime'] === null) {
+                // If overtime value is NULL, consider it as 0
+                $overtimeInSeconds = 0;
             } else {
-                $official_timeOut = $row['time_out'];
-                $official_timeIn = strtotime($official_timeIn);
-                $official_timeOut = strtotime($official_timeOut);
-                $official_diff = abs($official_timeOut - $official_timeIn);
+                // Parse the overtime value in the format %H:%i:%s
+                list($hours, $minutes, $seconds) = explode(":", $row['overtime']);
+                $overtimeInSeconds = $hours * 3600 + $minutes * 60 + $seconds;
             }
+
+            $totalOvertime += $overtimeInSeconds;
         }
     }
-    $official_diff = $official_diff * $array[0];
-    if ($official_diff < $total) {
-        $official_diff = $total - $official_diff;
-        $official_hours = (int)floor($official_diff / 3600);
-        $official_mins = (int)floor($official_diff / 60 % 60);
-        $official_time = $official_hours . " hours " . $official_mins . " minutes";
-        array_push($array, $official_time);
-    } else {
-        array_push($array, "0 hours 0 minutes");
-    }
+
+    // Convert the totalOvertime from seconds to a formatted string
+    $totalOvertimeHours = floor($totalOvertime / 3600);
+    $totalOvertimeMinutes = floor(($totalOvertime % 3600) / 60);
+    $totalOvertimeSeconds = $totalOvertime % 60;
+
+    $totalOvertimeFormatted = "$totalOvertimeHours hours $totalOvertimeMinutes minutes $totalOvertimeSeconds seconds";
+
+    // Now, $totalOvertimeFormatted contains the sum of overtime for all records in the specified month and year
+
+    array_push($array, $totalOvertimeFormatted);
+
+
+
 
 
     echo json_encode($array);
@@ -1495,13 +1510,13 @@ function insert()
         $sql4 = "UPDATE `signin` SET `Signout`='$sign_in' WHERE Name='$name' order by auto desc limit 1";
         $result = mysqli_query($conn, $sql4);
     } elseif ($activity == "Signed Out" && $curr_date == $date) {
-        $sql = "INSERT INTO `signin`(`user_id`, `Name`,`Signin`, `Status`,`Signout_Status`, `Signout`,`activity`,`Date`,`attendance`,`hours`) VALUES ('$ID','$name','$sign_in','Welcome Back','-','','Signed in','$date','-','')";
+        $sql = "INSERT INTO `signin`(`user_id`, `Name`,`Signin`, `Status`,`Signout_Status`, `Signout`,`activity`,`Date`,`attendance`,`hours`,`overtime`) VALUES ('$ID','$name','$sign_in','Welcome Back','-','','Signed in','$date','-','','')";
         // $sql5="SELECT * FROM 'signin' where "
 
         $result = mysqli_query($conn, $sql);
     } else {
 
-        $sql = "INSERT INTO `signin`( `user_id`,`Name`,`Signin`, `Status`, `Signout_Status`, `Signout`,`activity`,`Date`,`attendance`,`hours`) VALUES ('$ID','$name','$sign_in','$status','-','','Signed in','$date','Present','')";
+        $sql = "INSERT INTO `signin`( `user_id`,`Name`,`Signin`, `Status`, `Signout_Status`, `Signout`,`activity`,`Date`,`attendance`,`hours`,`overtime`) VALUES ('$ID','$name','$sign_in','$status','-','','Signed in','$date','Present','','')";
         // $sql5="SELECT * FROM 'signin' where "
 
         $result = mysqli_query($conn, $sql);
@@ -1568,12 +1583,14 @@ function add_hours()
     $str3 = "";
     $str4 = "";
 
+
     while ($row = mysqli_fetch_assoc($query)) {
 
         $str1 = "{$row['Signin']}";
         $str2 = "{$row['Signout']}";
         $str3 = "{$row['activity']}";
         $str4 = "{$row['user_id']}";
+       
     }
     array_push($array, $str1);
     array_push($array, $str2);
@@ -1581,11 +1598,13 @@ function add_hours()
     array_push($array, $str4);
 
 
+
     date_default_timezone_set("Asia/karachi");
     $sign_in = $str1;
     $sign_out = $str2;
     $activity = $str3;
     $user_id = $str4;
+    
 
 
 
@@ -1594,6 +1613,7 @@ function add_hours()
         date_default_timezone_set('Asia/karachi'); // Replace 'Your_Timezone' with your actual timezone
 
         $today = date("Y-m-d");
+        $date = date("n, j, Y", strtotime("-1 day"));
         $signin_time = DateTime::createFromFormat('Y-m-d H:i:s', $today . ' ' . date("H:i:s", strtotime($sign_in)));
         $signout_time = DateTime::createFromFormat('Y-m-d H:i:s', $today . ' ' . date("H:i:s", strtotime($sign_out)));
         if ($signout_time < $signin_time) {
@@ -1602,25 +1622,24 @@ function add_hours()
         }
         $interval = $signin_time->diff($signout_time);
         $hours = $interval->format('%h:%i:%s');
-        $sql4 = "UPDATE `signin` SET `hours`='$hours' where `user_id`='$ID'";
+        $fixed_overtime = new DateInterval('PT7H'); // 7 hours
+        $overtime_time = new DateTime('00:00:00');
+        $overtime_time->add($interval)->sub($fixed_overtime);
+        $overtime = $overtime_time->format('%h:%i:%s');
+        $overtime2 = str_replace('%', '', $overtime);
+        $sql4 = "UPDATE `signin` SET `hours`='$hours', `overtime`='$overtime2' where `user_id`='$ID' AND `Date`='$date'";
         $result = mysqli_query($conn, $sql4);
-        if ($result) {
-            echo "Hours updated successfully.";
-        } else {
-            echo "Failed to update hours: " . mysqli_error($conn);
-        }
 
         if ($hours < "7:0:0" && $hours > "5:0:0") {
-            $sql5 = "UPDATE `signin` SET `Signout_Status`='Early going' where `user_id`='$ID'";
+            $sql5 = "UPDATE `signin` SET `Signout_Status`='Early going' where `user_id`='$ID' AND `Date`='$date'";
             $result = mysqli_query($conn, $sql5);
         } else if ($hours < "5:0:0" && $activity == "Signed Out") {
-            $sql6 = "UPDATE `signin` SET `Signout_Status`='Half day' where `user_id`='$ID'";
+            $sql6 = "UPDATE `signin` SET `Signout_Status`='Half day' where `user_id`='$ID' AND `Date`='$date'";
             $result = mysqli_query($conn, $sql6);
         } else if ($hours > "8:0:0" && $activity == "Signed Out") {
-            $sql7 = "UPDATE `signin` SET `Signout_Status`='Over Time' where `user_id`='$ID'";
+            $sql7 = "UPDATE `signin` SET `Signout_Status`='Over Time' where `user_id`='$ID' AND `Date`='$date'";
             $result = mysqli_query($conn, $sql7);
         }
-        $result = mysqli_query($conn, $sql5);
         if ($result) {
             echo "Hours updated successfully.";
         } else {
@@ -1630,6 +1649,7 @@ function add_hours()
         date_default_timezone_set('Asia/karachi'); // Replace 'Your_Timezone' with your actual timezone
 
         $today = date("Y-m-d");
+        $date = date("n, j, Y", strtotime("-1 day"));
         $signin_time = DateTime::createFromFormat('Y-m-d H:i:s', $today . ' ' . date("H:i:s", strtotime($sign_in)));
         $signout_time = DateTime::createFromFormat('Y-m-d H:i:s', $today . ' ' . date("H:i:s", strtotime($sign_out)));
         if ($signout_time < $signin_time) {
@@ -1638,25 +1658,24 @@ function add_hours()
         }
         $interval = $signin_time->diff($signout_time);
         $hours = $interval->format('%h:%i:%s');
-        $sql4 = "UPDATE `signin` SET `hours`='$hours' where `user_id`='$ID'";
+        $fixed_overtime = new DateInterval('PT7H'); // 7 hours
+        $overtime_time = new DateTime('00:00:00');
+        $overtime_time->add($interval)->sub($fixed_overtime);
+        $overtime = $overtime_time->format('%h:%i:%s');
+        $overtime2 = str_replace('%', '', $overtime);
+        $sql4 = "UPDATE `signin` SET `hours`='$hours', `overtime`='$overtime2' where `user_id`='$ID' AND `Date`='$date'";
         $result = mysqli_query($conn, $sql4);
-        if ($result) {
-            echo "Hours updated successfully.";
-        } else {
-            echo "Failed to update hours: " . mysqli_error($conn);
-        }
 
         if ($hours < "6:0:0" && $hours > "5:0:0") {
-            $sql5 = "UPDATE `signin` SET `Signout_Status`='Early going' where `user_id`='$ID'";
+            $sql5 = "UPDATE `signin` SET `Signout_Status`='Early going' where `user_id`='$ID' AND `Date`='$date'";
             $result = mysqli_query($conn, $sql5);
         } else if ($hours < "4:0:0" && $activity == "Signed Out") {
-            $sql6 = "UPDATE `signin` SET `Signout_Status`='Half day' where `user_id`='$ID'";
+            $sql6 = "UPDATE `signin` SET `Signout_Status`='Half day' where `user_id`='$ID' AND `Date`='$date'";
             $result = mysqli_query($conn, $sql6);
         } else if ($hours > "7:0:0" && $activity == "Signed Out") {
-            $sql7 = "UPDATE `signin` SET `Signout_Status`='Over Time' where `user_id`='$ID'";
+            $sql7 = "UPDATE `signin` SET `Signout_Status`='Over Time' where `user_id`='$ID' AND `Date`='$date'";
             $result = mysqli_query($conn, $sql7);
         }
-        $result = mysqli_query($conn, $sql5);
         if ($result) {
             echo "Hours updated successfully.";
         } else {
@@ -1673,11 +1692,11 @@ function absent()
     $array = array();
 
     // Check if the current time is after 12 am (midnight)
-    
+
     date_default_timezone_set("Asia/Karachi");
     $current_time = date("H:i:s");
     $date = date("n, j, Y", strtotime("-1 day"));
-    
+
 
 
     if (strtotime($current_time) >= strtotime("00:00:00") && strtotime($current_time) < strtotime("12:00:00")) {
