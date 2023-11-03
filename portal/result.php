@@ -23,10 +23,13 @@ function fetch_data()
 
   date_default_timezone_set("Asia/Karachi");
   $date = date("n, j, Y");
+  $previous_date = date("n, j, Y", strtotime("-1 day"));
+  $current_time = date("H:i:s");
  
 
   // Query to retrieve data from the 'signin' table
-  $query = "SELECT * FROM `signin` WHERE `Date`='$date'";
+  if (strtotime($current_time) >= strtotime("00:00:00") && strtotime($current_time) < strtotime("12:00:00")) {
+  $query = "SELECT * FROM `signin` WHERE `Date` = '$date' or `Date` = '$previous_date'";
   $exec = mysqli_query($conn, $query);
   
   if (mysqli_num_rows($exec) > 0) {
@@ -36,6 +39,18 @@ function fetch_data()
     // echo "0 results for signin table";
     return [];
   }
+} else{
+  $query = "SELECT * FROM `signin` WHERE `Date` = '$date'";
+  $exec = mysqli_query($conn, $query);
+  
+  if (mysqli_num_rows($exec) > 0) {
+    $row = mysqli_fetch_all($exec, MYSQLI_ASSOC);
+    return $row;
+  } else {
+    // echo "0 results for signin table";
+    return [];
+  }
+}
 }
 
 $fetchData = fetch_data();
@@ -54,6 +69,7 @@ function show_data($fetchData)
             <th>Signout Status</th>
             <th>Activity</th>
             <th>Date</th>
+            <th>Attendance</th>
         </tr>
         </thead>';
 
@@ -70,6 +86,7 @@ function show_data($fetchData)
           <td>" . $data['Signout_Status'] . "</td>
           <td>" . $data['activity'] . "</td>
           <td>" . $data['Date'] . "</td>
+          <td>" . $data['attendance'] . "</td>
       </tr>";
       $sn++;
     }

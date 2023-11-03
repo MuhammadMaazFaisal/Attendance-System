@@ -24,7 +24,7 @@ $(document).ready(function () {
           success: function (data) {
             display(id);
             modal(id);
-            absent();
+            absent(id);
             
             
            
@@ -57,7 +57,7 @@ $(document).ready(function () {
     });
   }
 
-  function absent() {
+  function absent(a) {
     $.ajax({
       type: "POST",
       url: "../include/functions.php",
@@ -66,7 +66,14 @@ $(document).ready(function () {
         
       },
       success: function (data) {
-       console.log(data);
+        $.ajax({
+          type: "Post",
+          url: "result.php",
+          data: { a: a },
+          success: function (data) {
+            $("#table-container").html(data);
+          },
+        });
       }
     });
   }

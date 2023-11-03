@@ -1517,39 +1517,39 @@ function insert()
         }
     }
 
-    if ($activity == "Signed in" and $date == $curr_date and $sign_in >= "09:00:00pm") {
+    // if ($activity == "Signed in" and $date == $curr_date and $sign_in >= "09:00:00pm") {
 
-        $emparr = [];
-        $sqlll = "SELECT * FROM `users` where user_status='Active'";
-        $query = mysqli_query($conn, $sqlll) or die("Query Unsuccessful");
-        while ($row = mysqli_fetch_assoc($query)) {
+    //     $emparr = [];
+    //     $sqlll = "SELECT * FROM `users` where user_status='Active'";
+    //     $query = mysqli_query($conn, $sqlll) or die("Query Unsuccessful");
+    //     while ($row = mysqli_fetch_assoc($query)) {
 
-            $empnames = "{$row['employee_name']}";
-            array_push($emparr, $empnames);
-        }
-        //
-        $dailyarr = [];
-        $sqo = "SELECT * FROM `signin` WHERE  Date='$date'";
-        $query5 = mysqli_query($conn, $sqo) or die("Query Unsuccessful");
-        while ($row = mysqli_fetch_assoc($query5)) {
+    //         $empnames = "{$row['employee_name']}";
+    //         array_push($emparr, $empnames);
+    //     }
+    //     //
+    //     $dailyarr = [];
+    //     $sqo = "SELECT * FROM `signin` WHERE  Date='$date'";
+    //     $query5 = mysqli_query($conn, $sqo) or die("Query Unsuccessful");
+    //     while ($row = mysqli_fetch_assoc($query5)) {
 
-            $dailynames = "{$row['user_id']}";
-            array_push($dailyarr, $dailynames);
-        }
-        //   array_push($array,$dailyarr);
-        $b = array_diff($emparr, $dailyarr);
-        array_push($array, $b);
-        $arrayLength = count($b);
-        $i = 0;
-        $absenties = '';
-        while ($i < $arrayLength) {
+    //         $dailynames = "{$row['user_id']}";
+    //         array_push($dailyarr, $dailynames);
+    //     }
+    //     //   array_push($array,$dailyarr);
+    //     $b = array_diff($emparr, $dailyarr);
+    //     array_push($array, $b);
+    //     $arrayLength = count($b);
+    //     $i = 0;
+    //     $absenties = '';
+    //     while ($i < $arrayLength) {
 
-            $absenties = $b[$i];
-            $sql69 = "INSERT INTO `signin`(`user_id`,`Name`,`Signin`,`Status`,`Signout_Status`,`Signout`,`activity`,`Date`,`attendance`,`hours`) VALUES ('$ID','$absenties','$sign_in','Welcome Back','-','-','Signed in','$date','Absent','')";
-            $query6 = mysqli_query($conn, $sql69) or die("Query Unsuccessful");
-            $i++;
-        }
-    }
+    //         $absenties = $b[$i];
+    //         $sql69 = "INSERT INTO `signin`(`user_id`,`Name`,`Signin`,`Status`,`Signout_Status`,`Signout`,`activity`,`Date`,`attendance`,`hours`) VALUES ('$ID','$absenties','$sign_in','Welcome Back','-','-','Signed in','$date','Absent','')";
+    //         $query6 = mysqli_query($conn, $sql69) or die("Query Unsuccessful");
+    //         $i++;
+    //     }
+    // }
 
     echo json_encode($array);
 }
@@ -1673,9 +1673,12 @@ function absent()
     $array = array();
 
     // Check if the current time is after 12 am (midnight)
-    date_default_timezone_set('Asia/Karachi');
+    
+    date_default_timezone_set("Asia/Karachi");
     $current_time = date("H:i:s");
-    $date = date("n, j, Y");
+    $date = date("n, j, Y", strtotime("-1 day"));
+    
+
 
     if (strtotime($current_time) >= strtotime("00:00:00") && strtotime($current_time) < strtotime("12:00:00")) {
         $getRecordQuery = "SELECT u.`user_id`, u.`employee_name`
@@ -1688,12 +1691,15 @@ function absent()
                 AND s.`Date` = '$date'
             )";
 
+
         $query_users = mysqli_query($conn, $getRecordQuery) or die("Query Unsuccessful");
 
         while ($row = mysqli_fetch_assoc($query_users)) {
             $user_id1 = $row['user_id'];
             $employee_name1 = $row['employee_name'];
-            $sql69 = "INSERT INTO `signin`(`user_id`,`Name`,`Signin`,`Status`,`Signout_Status`,`Signout`,`activity`,`Date`,`attendance`,`hours`) VALUES ('$user_id1','$employee_name1','-','-','-','-','-','$date','Absent','-')";
+            $previous_date = date("n, j, Y", strtotime("-1 day"));
+
+            $sql69 = "INSERT INTO `signin`(`user_id`,`Name`,`Signin`,`Status`,`Signout_Status`,`Signout`,`activity`,`Date`,`attendance`,`hours`) VALUES ('$user_id1','$employee_name1','-','-','-','-','-','$previous_date','Absent','-')";
             $result = mysqli_query($conn, $sql69);
 
             if ($result) {
