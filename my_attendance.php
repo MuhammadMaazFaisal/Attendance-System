@@ -20,6 +20,7 @@ if (isset($_SESSION['status']) && $_SESSION['user_access'] == 'Employee') {
                 <div class="mb-5">
                     <button type="button" class="btn bg-success text-white m-1">On Time</button>
                     <button type="button" class="btn bg-primary text-white m-1">Half Day</button>
+                    <button type="button" class="btn bg-warning text-white m-1">Overtime</button>
                     <button type="button" class="btn bg-secondary text-white m-1">Off Day</button>
                     <button type="button" class="btn bg-danger text-white m-1" id='absent'>Absent</button>
                 </div>

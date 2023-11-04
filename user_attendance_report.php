@@ -140,8 +140,8 @@ if (isset($_SESSION['status']) && $_SESSION['user_access'] == 'Employee') {
                                         <th scope="col">Status In</th>
                                         <th scope="col">Time Out</th>
                                         <th scope="col">Status Out</th>
-                                        <th scope="col">Total Hours</th>
                                         <th scope="col">Status</th>
+                                        <th scope="col">Total Hours</th>
                                     </tr>
                                 </thead>
                                 <tbody id="table_body">

@@ -517,7 +517,7 @@ function get_display8()
     $year = $_POST['year1'];
     $user_id = $_POST['user_id'];
 
-    $sql = "SELECT * FROM `signin` WHERE Date LIKE'$ID%'AND Date LIKE'%$year' AND user_id='$user_id' AND `attendance`!='-' ";
+    $sql = "SELECT * FROM `signin` WHERE Date LIKE'$ID%' AND Date LIKE'%$year' AND user_id='$user_id' AND `attendance`!='-' ";
     $result = mysqli_query($conn, $sql);
     $ok = "";
     $array = [];
@@ -526,8 +526,10 @@ function get_display8()
         // output data of each row
         while ($row = $result->fetch_assoc()) {
             $new_row = [];
+
             $row['Date'] = substr($row['Date'], 4, 2);
-            array_push($new_row, $row['Date']);
+            $date = str_replace(',', '', $row['Date']);
+            array_push($new_row, $date);
             array_push($new_row, $row['attendance']);
             array_push($array, $new_row);
         };
@@ -998,7 +1000,7 @@ function get_monthly_data()
             } else {
                 // Parse the overtime value in the format %H:%i:%s
                 list($hours, $minutes, $seconds) = explode(":", $row['hours']);
-                
+
                 $overtimeInSeconds = $hours * 3600 + $minutes * 60 + $seconds;
             }
 
@@ -1250,7 +1252,7 @@ function get_presents()
     $year1 = $_POST['year1'];
     $user_id = $_POST['user_id'];
     $array = [];
-    $sql = "SELECT `Status`,`Signout_Status` FROM `signin` WHERE `attendance`='Present' AND `Date` LIKE'$month1%'AND `Date` LIKE'%$year1' AND `Status`!='Welcome Back' AND `user_id`='$user_id'";
+    $sql = "SELECT `Status`,`Signout_Status` FROM `signin` WHERE `attendance`='Present' AND `Date` LIKE'$month1%' AND `Date` LIKE'%$year1' AND `Status`!='Welcome Back' AND `user_id`='$user_id'";
     $result = mysqli_query($conn, $sql);
     if ($result->num_rows > 0) {
         while ($row = $result->fetch_assoc()) {
@@ -1590,7 +1592,6 @@ function add_hours()
         $str2 = "{$row['Signout']}";
         $str3 = "{$row['activity']}";
         $str4 = "{$row['user_id']}";
-       
     }
     array_push($array, $str1);
     array_push($array, $str2);
@@ -1604,82 +1605,162 @@ function add_hours()
     $sign_out = $str2;
     $activity = $str3;
     $user_id = $str4;
-    
+    $current_time = date("H:i:s");
+
 
 
 
     if ($activity == "Signed Out" && $ID != "ETPDJD001" && $ID != "ETPDJD003" && $ID != "ETPDJD004" && $ID != "ETPSSM005" && $ID == "$user_id") {
+        if (strtotime($current_time) >= strtotime("00:00:00") && strtotime($current_time) < strtotime("12:00:00")) {
+            date_default_timezone_set('Asia/karachi'); // Replace 'Your_Timezone' with your actual timezone
 
-        date_default_timezone_set('Asia/karachi'); // Replace 'Your_Timezone' with your actual timezone
+            $today = date("Y-m-d");
+            $date = date("n, j, Y", strtotime("-1 day"));
 
-        $today = date("Y-m-d");
-        $date = date("n, j, Y", strtotime("-1 day"));
-        $signin_time = DateTime::createFromFormat('Y-m-d H:i:s', $today . ' ' . date("H:i:s", strtotime($sign_in)));
-        $signout_time = DateTime::createFromFormat('Y-m-d H:i:s', $today . ' ' . date("H:i:s", strtotime($sign_out)));
-        if ($signout_time < $signin_time) {
-            // Add 24 hours to the signout time
-            $signout_time->modify('+1 day');
-        }
-        $interval = $signin_time->diff($signout_time);
-        $hours = $interval->format('%h:%i:%s');
-        $fixed_overtime = new DateInterval('PT7H'); // 7 hours
-        $overtime_time = new DateTime('00:00:00');
-        $overtime_time->add($interval)->sub($fixed_overtime);
-        $overtime = $overtime_time->format('%h:%i:%s');
-        $overtime2 = str_replace('%', '', $overtime);
-        $sql4 = "UPDATE `signin` SET `hours`='$hours', `overtime`='$overtime2' where `user_id`='$ID' AND `Date`='$date'";
-        $result = mysqli_query($conn, $sql4);
+            $signin_time = DateTime::createFromFormat('Y-m-d H:i:s', $today . ' ' . date("H:i:s", strtotime($sign_in)));
+            $signout_time = DateTime::createFromFormat('Y-m-d H:i:s', $today . ' ' . date("H:i:s", strtotime($sign_out)));
+            if ($signout_time < $signin_time) {
+                // Add 24 hours to the signout time
+                $signout_time->modify('+1 day');
+            }
+            $interval = $signin_time->diff($signout_time);
+            $hours = $interval->format('%h:%i:%s');
+            $fixed_overtime = new DateInterval('PT7H'); // 7 hours
+            $overtime_time = new DateTime('00:00:00');
+            $overtime_time->add($interval)->sub($fixed_overtime);
+            $overtime = $overtime_time->format('%h:%i:%s');
+            $overtime2 = str_replace('%', '', $overtime);
+            $sql4 = "UPDATE `signin` SET `hours`='$hours' where `user_id`='$ID' AND `Date`='$date'";
+            $result = mysqli_query($conn, $sql4);
 
-        if ($hours < "7:0:0" && $hours > "5:0:0") {
-            $sql5 = "UPDATE `signin` SET `Signout_Status`='Early going' where `user_id`='$ID' AND `Date`='$date'";
-            $result = mysqli_query($conn, $sql5);
-        } else if ($hours < "5:0:0" && $activity == "Signed Out") {
-            $sql6 = "UPDATE `signin` SET `Signout_Status`='Half day' where `user_id`='$ID' AND `Date`='$date'";
-            $result = mysqli_query($conn, $sql6);
-        } else if ($hours > "8:0:0" && $activity == "Signed Out") {
-            $sql7 = "UPDATE `signin` SET `Signout_Status`='Over Time' where `user_id`='$ID' AND `Date`='$date'";
-            $result = mysqli_query($conn, $sql7);
-        }
-        if ($result) {
-            echo "Hours updated successfully.";
-        } else {
-            echo "Failed to update hours: " . mysqli_error($conn);
+            if ($hours < "7:0:0" && $hours > "5:0:0") {
+                $sql5 = "UPDATE `signin` SET `Signout_Status`='Early going' where `user_id`='$ID' AND `Date`='$date'";
+                $result = mysqli_query($conn, $sql5);
+            } else if ($hours < "5:0:0" && $activity == "Signed Out") {
+                $sql6 = "UPDATE `signin` SET `Signout_Status`='Half day' where `user_id`='$ID' AND `Date`='$date'";
+                $result = mysqli_query($conn, $sql6);
+            } else if ($hours > "8:0:0" && $activity == "Signed Out") {
+                $sql7 = "UPDATE `signin` SET `Signout_Status`='Over Time', `overtime`='$overtime2'  where `user_id`='$ID' AND `Date`='$date'";
+                $result = mysqli_query($conn, $sql7);
+            }
+            if ($result) {
+                echo "Hours updated successfully.";
+            } else {
+                echo "Failed to update hours: " . mysqli_error($conn);
+            }
+        } else if (strtotime($current_time) >= strtotime("12:00:00") && strtotime($current_time) < strtotime("24:00:00")) {
+            date_default_timezone_set('Asia/karachi'); // Replace 'Your_Timezone' with your actual timezone
+
+            $today = date("Y-m-d");
+            $date = date("n, j, Y");
+
+            $signin_time = DateTime::createFromFormat('Y-m-d H:i:s', $today . ' ' . date("H:i:s", strtotime($sign_in)));
+            $signout_time = DateTime::createFromFormat('Y-m-d H:i:s', $today . ' ' . date("H:i:s", strtotime($sign_out)));
+            if ($signout_time < $signin_time) {
+                // Add 24 hours to the signout time
+                $signout_time->modify('+1 day');
+            }
+            $interval = $signin_time->diff($signout_time);
+            $hours = $interval->format('%h:%i:%s');
+            $fixed_overtime = new DateInterval('PT7H'); // 7 hours
+            $overtime_time = new DateTime('00:00:00');
+            $overtime_time->add($interval)->sub($fixed_overtime);
+            $overtime = $overtime_time->format('%h:%i:%s');
+            $overtime2 = str_replace('%', '', $overtime);
+            $sql4 = "UPDATE `signin` SET `hours`='$hours' where `user_id`='$ID' AND `Date`='$date'";
+            $result = mysqli_query($conn, $sql4);
+
+            if ($hours < "7:0:0" && $hours > "5:0:0") {
+                $sql5 = "UPDATE `signin` SET `Signout_Status`='Early going' where `user_id`='$ID' AND `Date`='$date'";
+                $result = mysqli_query($conn, $sql5);
+            } else if ($hours < "5:0:0" && $activity == "Signed Out") {
+                $sql6 = "UPDATE `signin` SET `Signout_Status`='Half day' where `user_id`='$ID' AND `Date`='$date'";
+                $result = mysqli_query($conn, $sql6);
+            } else if ($hours > "8:0:0" && $activity == "Signed Out") {
+                $sql7 = "UPDATE `signin` SET `Signout_Status`='Over Time', `overtime`='$overtime2' where `user_id`='$ID' AND `Date`='$date'";
+                $result = mysqli_query($conn, $sql7);
+            }
+            if ($result) {
+                echo "Hours updated successfully.";
+            } else {
+                echo "Failed to update hours: " . mysqli_error($conn);
+            }
         }
     } else if ($activity == "Signed Out" && $ID == "$user_id") {
-        date_default_timezone_set('Asia/karachi'); // Replace 'Your_Timezone' with your actual timezone
+        if (strtotime($current_time) >= strtotime("00:00:00") && strtotime($current_time) < strtotime("12:00:00")) {
+            date_default_timezone_set('Asia/karachi'); // Replace 'Your_Timezone' with your actual timezone
 
-        $today = date("Y-m-d");
-        $date = date("n, j, Y", strtotime("-1 day"));
-        $signin_time = DateTime::createFromFormat('Y-m-d H:i:s', $today . ' ' . date("H:i:s", strtotime($sign_in)));
-        $signout_time = DateTime::createFromFormat('Y-m-d H:i:s', $today . ' ' . date("H:i:s", strtotime($sign_out)));
-        if ($signout_time < $signin_time) {
-            // Add 24 hours to the signout time
-            $signout_time->modify('+1 day');
-        }
-        $interval = $signin_time->diff($signout_time);
-        $hours = $interval->format('%h:%i:%s');
-        $fixed_overtime = new DateInterval('PT7H'); // 7 hours
-        $overtime_time = new DateTime('00:00:00');
-        $overtime_time->add($interval)->sub($fixed_overtime);
-        $overtime = $overtime_time->format('%h:%i:%s');
-        $overtime2 = str_replace('%', '', $overtime);
-        $sql4 = "UPDATE `signin` SET `hours`='$hours', `overtime`='$overtime2' where `user_id`='$ID' AND `Date`='$date'";
-        $result = mysqli_query($conn, $sql4);
+            $today = date("Y-m-d");
+            $date = date("n, j, Y", strtotime("-1 day"));
 
-        if ($hours < "6:0:0" && $hours > "5:0:0") {
-            $sql5 = "UPDATE `signin` SET `Signout_Status`='Early going' where `user_id`='$ID' AND `Date`='$date'";
-            $result = mysqli_query($conn, $sql5);
-        } else if ($hours < "4:0:0" && $activity == "Signed Out") {
-            $sql6 = "UPDATE `signin` SET `Signout_Status`='Half day' where `user_id`='$ID' AND `Date`='$date'";
-            $result = mysqli_query($conn, $sql6);
-        } else if ($hours > "7:0:0" && $activity == "Signed Out") {
-            $sql7 = "UPDATE `signin` SET `Signout_Status`='Over Time' where `user_id`='$ID' AND `Date`='$date'";
-            $result = mysqli_query($conn, $sql7);
-        }
-        if ($result) {
-            echo "Hours updated successfully.";
-        } else {
-            echo "Failed to update hours: " . mysqli_error($conn);
+            $signin_time = DateTime::createFromFormat('Y-m-d H:i:s', $today . ' ' . date("H:i:s", strtotime($sign_in)));
+            $signout_time = DateTime::createFromFormat('Y-m-d H:i:s', $today . ' ' . date("H:i:s", strtotime($sign_out)));
+            if ($signout_time < $signin_time) {
+                // Add 24 hours to the signout time
+                $signout_time->modify('+1 day');
+            }
+            $interval = $signin_time->diff($signout_time);
+            $hours = $interval->format('%h:%i:%s');
+            $fixed_overtime = new DateInterval('PT6H'); // 6 hours
+            $overtime_time = new DateTime('00:00:00');
+            $overtime_time->add($interval)->sub($fixed_overtime);
+            $overtime = $overtime_time->format('%h:%i:%s');
+            $overtime2 = str_replace('%', '', $overtime);
+            $sql4 = "UPDATE `signin` SET `hours`='$hours' where `user_id`='$ID' AND `Date`='$date'";
+            $result = mysqli_query($conn, $sql4);
+
+            if ($hours < "6:0:0" && $hours > "5:0:0") {
+                $sql5 = "UPDATE `signin` SET `Signout_Status`='Early going' where `user_id`='$ID' AND `Date`='$date'";
+                $result = mysqli_query($conn, $sql5);
+            } else if ($hours < "4:0:0" && $activity == "Signed Out") {
+                $sql6 = "UPDATE `signin` SET `Signout_Status`='Half day' where `user_id`='$ID' AND `Date`='$date'";
+                $result = mysqli_query($conn, $sql6);
+            } else if ($hours > "7:0:0" && $activity == "Signed Out") {
+                $sql7 = "UPDATE `signin` SET `Signout_Status`='Over Time', `overtime`='$overtime2' where `user_id`='$ID' AND `Date`='$date'";
+                $result = mysqli_query($conn, $sql7);
+            }
+            if ($result) {
+                echo "Hours updated successfully.";
+            } else {
+                echo "Failed to update hours: " . mysqli_error($conn);
+            }
+        } else if (strtotime($current_time) >= strtotime("12:00:00") && strtotime($current_time) < strtotime("24:00:00")) {
+            date_default_timezone_set('Asia/karachi'); // Replace 'Your_Timezone' with your actual timezone
+
+            $today = date("Y-m-d");
+            $date = date("n, j, Y");
+
+            $signin_time = DateTime::createFromFormat('Y-m-d H:i:s', $today . ' ' . date("H:i:s", strtotime($sign_in)));
+            $signout_time = DateTime::createFromFormat('Y-m-d H:i:s', $today . ' ' . date("H:i:s", strtotime($sign_out)));
+            if ($signout_time < $signin_time) {
+                // Add 24 hours to the signout time
+                $signout_time->modify('+1 day');
+            }
+            $interval = $signin_time->diff($signout_time);
+            $hours = $interval->format('%h:%i:%s');
+            $fixed_overtime = new DateInterval('PT6H'); // 6 hours
+            $overtime_time = new DateTime('00:00:00');
+            $overtime_time->add($interval)->sub($fixed_overtime);
+            $overtime = $overtime_time->format('%h:%i:%s');
+            $overtime2 = str_replace('%', '', $overtime);
+            $sql4 = "UPDATE `signin` SET `hours`='$hours' where `user_id`='$ID' AND `Date`='$date'";
+            $result = mysqli_query($conn, $sql4);
+
+            if ($hours < "6:0:0" && $hours > "5:0:0") {
+                $sql5 = "UPDATE `signin` SET `Signout_Status`='Early going' where `user_id`='$ID' AND `Date`='$date'";
+                $result = mysqli_query($conn, $sql5);
+            } else if ($hours < "4:0:0" && $activity == "Signed Out") {
+                $sql6 = "UPDATE `signin` SET `Signout_Status`='Half day' where `user_id`='$ID' AND `Date`='$date'";
+                $result = mysqli_query($conn, $sql6);
+            } else if ($hours > "7:0:0" && $activity == "Signed Out") {
+                $sql7 = "UPDATE `signin` SET `Signout_Status`='Over Time', `overtime`='$overtime2' where `user_id`='$ID' AND `Date`='$date'";
+                $result = mysqli_query($conn, $sql7);
+            }
+            if ($result) {
+                echo "Hours updated successfully.";
+            } else {
+                echo "Failed to update hours: " . mysqli_error($conn);
+            }
         }
     }
 }

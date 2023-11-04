@@ -1640,7 +1640,7 @@ function get_attendance_data(user_id, month1, year1) {
       data = JSON.parse(data);
       let array = [];
       let all_td = document.getElementsByTagName("td");
-      for (i = 0; i < all_td.length - 1; i++) {
+      for (i = 0; i < all_td.length; i++) {
         if (all_td[i].classList.contains("table-dark")) {
           array.push(i);
         }
@@ -1650,17 +1650,17 @@ function get_attendance_data(user_id, month1, year1) {
         let td = array[count];
         if (count < array.length) {
           if (
-            data[count].Status == "On Time" ||
+            data[count].Status == "On Time" &&
             data[count].Signout_Status == "Half day"
           ) {
             all_td[td].classList.add("table-primary");
             all_td[td].classList.remove("table-dark");
             count++;
           } else if (
-            data[count].Status == "On Time" ||
+            data[count].Status == "On Time" &&
             data[count].Signout_Status == "Over Time"
           ) {
-            all_td[td].classList.add("table-success");
+            all_td[td].classList.add("table-warning");
             all_td[td].classList.remove("table-dark");
             count++;
           } else {
