@@ -2,9 +2,10 @@
 <html>
 
 <head>
+    <link rel="icon" type="image/png" href="img/Esolace logo-01.png">
     <style>
         #mainWrapper {
-            background-image: url('img/loginside.gif');
+            background-image: url('img/login7.jpg');
             background-size: cover;
             background-repeat: no-repeat;
             background-attachment: fixed;
@@ -25,7 +26,7 @@
         ?>
             <div id="layoutSidenav_content">
                 <main>
-                    <div class="container-fluid">
+                    <div class="container-fluid mb-5">
                         <h1 class="mt-5 mb-5">Dashboard</h1>
                         <!-- <ol class="breadcrumb mb-4">
                 <li class="breadcrumb-item active">Dashboard</li>
@@ -103,8 +104,8 @@
                             </div>
                         </div>
                 </main>
-                <footer class="py-4 mt-auto" style="opacity: 50%;
-  background-color:black ;">
+                <footer class="py-4 mt-auto" style="opacity: 90%;
+  background-color:#20205a ;">
                     <div class="container-fluid">
                         <div class="d-flex align-items-center justify-content-between small">
                             <div class="text-muted">Copyright &copy;

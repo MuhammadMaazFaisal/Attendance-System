@@ -10,7 +10,7 @@ if (isset($_SESSION['status']) && $_SESSION['user_access'] == 'Administrator') {
 
 <div id="layoutSidenav_content">
     <main>
-        <div class="container-fluid">
+        <div class="container-fluid mb-5">
             <div class="row mr-4">
                 <div class="col-8 col-md-4">
                     <h1 class="mt-4">All Employees</h1>
@@ -64,8 +64,8 @@ if (isset($_SESSION['status']) && $_SESSION['user_access'] == 'Administrator') {
             </div>
         </div>
     </main>
-    <footer class="py-4 mt-auto" style="opacity: 50%;
-  background-color:black ;">
+    <footer class="py-4 mt-auto" style="opacity: 90%;
+  background-color:#20205a ;">
                     <div class="container-fluid">
                         <div class="d-flex align-items-center justify-content-between small">
                             <div class="text-muted">Copyright &copy;
@@ -93,7 +93,7 @@ if (isset($_SESSION['status']) && $_SESSION['user_access'] == 'Administrator') {
                             <div class="row">
                                 <div class="col-md-4">
                                     <div class="form-group mx-auto mt-0 mt-md-5" style="width: 200px;">
-                                        <img name="image" id="image" src="">
+                                        <img name="image" id="image" src="" style="width: 200px; height: 300px;">
                                     </div>
                                 </div>
                                 <div class="col-md-8 add_top_30">
@@ -179,6 +179,12 @@ if (isset($_SESSION['status']) && $_SESSION['user_access'] == 'Administrator') {
                             <div class="row">
                                 <div class="col-md-4">
                                     <div class="form-group">
+                                        <label>Officical Email</label>
+                                        <input id=off_email class="form-control" name="off_email" type="email" readonly>
+                                    </div>
+                                </div>
+                                <div class="col-md-4">
+                                    <div class="form-group">
                                         <label>Email</label>
                                         <input id=email class="form-control" name=email type="email" readonly>
                                     </div>
@@ -190,6 +196,9 @@ if (isset($_SESSION['status']) && $_SESSION['user_access'] == 'Administrator') {
                                             type="text" readonly>
                                     </div>
                                 </div>
+                            </div>
+                            <!-- /row-->
+                            <div class="row">
                                 <div class="col-md-4">
                                     <div class="form-group">
                                         <label>Qualification</label>
@@ -197,10 +206,6 @@ if (isset($_SESSION['status']) && $_SESSION['user_access'] == 'Administrator') {
                                             readonly>
                                     </div>
                                 </div>
-
-                            </div>
-                            <!-- /row-->
-                            <div class="row">
                                 <div class="col-md-4">
                                     <div class="form-group">
                                         <label>CNIC</label>
@@ -221,8 +226,6 @@ if (isset($_SESSION['status']) && $_SESSION['user_access'] == 'Administrator') {
                                             type="text" readonly>
                                     </div>
                                 </div>
-                            </div>
-                            <div class="row">
                                 <div class="col-md-4">
                                     <div class="form-group">
                                         <label>Martial Status</label>
@@ -230,6 +233,32 @@ if (isset($_SESSION['status']) && $_SESSION['user_access'] == 'Administrator') {
                                             <input id="martial_status" class="form-control" name="martial_status"
                                                 type="text" readonly>
                                         </div>
+                                    </div>
+                                </div>
+
+                            </div>
+                             <div class="row mt-3">
+                                <h1>Next Of Kin</h1>
+                            </div>
+                            <div class="row">
+                                <div class="col-md-4">
+                                    <div class="form-group">
+                                        <label>Name</label>
+                                        <input id=n_name class="form-control" name=n_name type="text" readonly>
+                                    </div>
+                                </div>
+                                <div class="col-md-4">
+                                    <div class="form-group">
+                                        <label>Relation</label>
+                                        <input id="relation" class="form-control" name="relation"
+                                            type="text" readonly>
+                                    </div>
+                                </div>
+                                <div class="col-md-4">
+                                    <div class="form-group">
+                                        <label>Number</label>
+                                        <input id="n_number" class="form-control" name="n_number" type="text"
+                                            readonly>
                                     </div>
                                 </div>
 

@@ -10,7 +10,7 @@ if (isset($_SESSION['status']) && $_SESSION['user_access'] == 'Employee') {
     <div id="layoutSidenav_content">
         <main>
 
-            <div class="container-fluid">
+            <div class="container-fluid mb-5">
                 <h1 class="mt-4">My Attendance</h1>
                 <ol class="breadcrumb mb-4">
                     <li class="breadcrumb-item"><a href="dashboard.php">Dashboard</a></li>
@@ -87,8 +87,8 @@ if (isset($_SESSION['status']) && $_SESSION['user_access'] == 'Employee') {
             </div>
 
         </main>
-        <footer class="py-4 mt-auto" style="opacity: 50%;
-  background-color:black ;">
+        <footer class="py-4 mt-auto" style="opacity: 90%;
+  background-color:#20205a ;">
             <div class="container-fluid">
                 <div class="d-flex align-items-center justify-content-between small">
                     <div class="text-muted">Copyright &copy;

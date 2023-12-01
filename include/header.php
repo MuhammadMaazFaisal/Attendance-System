@@ -9,7 +9,7 @@
     <meta name="author" content="Askbootstrap" />
     <title>Esolace Tech</title>
     <!-- Esoloce Tech Icon -->
-    <link rel="icon" type="image/png" href="img/esolace logo.png">
+    <link rel="icon" type="image/png" href="img/Esolace logo-01.png">
     <!-- Feather Icon-->
     <link href="assets/vendor/icons/feather.css" rel="stylesheet" type="text/css">
     <!-- Fontawesome Icon-->

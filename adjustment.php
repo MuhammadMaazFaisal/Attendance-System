@@ -41,7 +41,7 @@ if (isset($_SESSION['status']) && $_SESSION['user_access'] == 'Administrator') {
             <div class="card mb-4 mr-5">
 
                 <div class="card-body row d-flex justify-content-end">
-                    <div class="form-group col-5 col-md-2 col-lg-1">
+                    <div class="form-group col-5 col-md-2 col-lg-2">
                         <label>Day</label>
                         <div>
                             <select id="day" name="day" class="custom-select">
@@ -80,7 +80,7 @@ if (isset($_SESSION['status']) && $_SESSION['user_access'] == 'Administrator') {
                             </select>
                         </div>
                     </div>
-                    <div class="form-group col-4 col-md-2 col-lg-1">
+                    <div class="form-group col-4 col-md-2 col-lg-2">
                         <label>Month</label>
                         <div>
                             <select id="month" name="month" class="custom-select">
@@ -100,7 +100,7 @@ if (isset($_SESSION['status']) && $_SESSION['user_access'] == 'Administrator') {
                             </select>
                         </div>
                     </div>
-                    <div class="form-group col-4 col-md-2 col-lg-1">
+                    <div class="form-group col-4 col-md-2 col-lg-2">
                         <label>Year</label>
                         <div>
                             <select id="year" name="year" class="custom-select">
@@ -140,8 +140,8 @@ if (isset($_SESSION['status']) && $_SESSION['user_access'] == 'Administrator') {
             </div>
         </div>
     </main>
-    <footer class="py-4 mt-auto" style="opacity: 50%;
-  background-color:black ;">
+    <footer class="py-4 mt-auto" style="opacity: 90%;
+  background-color:#20205a ;">
                     <div class="container-fluid">
                         <div class="d-flex align-items-center justify-content-between small">
                             <div class="text-muted">Copyright &copy;

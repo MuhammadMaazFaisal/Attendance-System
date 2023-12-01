@@ -4,7 +4,7 @@
     }
 </style> -->
 <nav class="sb-topnav navbar navbar-expand navbar-light bg-white bg-custom-color shadow-sm" style="height: 65px" ;>
-    <a class="navbar-brand" href=""><img alt="logo" src="img/esolace logo.png"></a>
+    <a class="navbar-brand" href="https://esolacetech.com" target="_blank"><img alt="logo" src="img/esolace logo.png"></a>
     <button class="btn btn-link btn-sm order-1 order-lg-0" id="sidebarToggle" href="#"><i class="fas fa-bars"></i></button>
     <!-- Navbar-->
     <ul class="navbar-nav  d-flex justify-content-end w-100  ">

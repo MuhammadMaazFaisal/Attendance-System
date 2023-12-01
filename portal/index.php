@@ -5,15 +5,29 @@
   <!-- Required meta tags -->
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  
   <link href="https://fonts.googleapis.com/css?family=Oswald:700|Neuton" rel="stylesheet" type="text/css">
 
   <!-- Bootstrap CSS -->
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.4.1/dist/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
+  
+  <link rel="icon" type="image/png" href="Esolace logo-01.png">
+  
   <style>
     .img-fluid1 {
       height: 50px;
     }
-
+    
+  
+    /*body {*/
+    /*    background-image: url('login10.jpg');*/
+    /*    background-size: cover;*/
+    /*    background-repeat: no-repeat;*/
+    /*    background-attachment: fixed;*/
+            
+    /*}*/
+  
+    
     h1 {
       font-family: Georgia, serif !important;
       font-style: normal;

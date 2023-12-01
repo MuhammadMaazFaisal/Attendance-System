@@ -75,8 +75,8 @@ if (isset($_SESSION['status']) && $_SESSION['user_access'] == 'Employee') {
 
         </div>
     </main>
-    <footer class="py-4 mt-auto" style="opacity: 50%;
-  background-color:black ;">
+    <footer class="py-4 mt-auto" style="opacity: 90%;
+  background-color:#20205a ;">
                     <div class="container-fluid">
                         <div class="d-flex align-items-center justify-content-between small">
                             <div class="text-muted">Copyright &copy;

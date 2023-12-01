@@ -104,6 +104,8 @@ if ($_POST["action"] == "login") {
     add_hours();
 } elseif ($_POST["action"] == "absent") {
     absent();
+} elseif ($_POST["action"] == "resetPassword") {
+    resetPassword();
 }
 
 function logout()
@@ -113,38 +115,47 @@ function logout()
     echo "logout";
 }
 
-function login()
-{
+function login() {
     include "db_connection.php";
     $array = [];
     $user_id = $_POST["user_id"];
-    $password = $_POST["password"];
-    $user_type = "";
+    $password = $_POST["password"]; // This is the plain text password
 
-    $sql = "SELECT * FROM `users` WHERE `user_id`='$user_id' AND `password`='$password' AND `user_status`='Active' ";
+    // Retrieve the user from the database without checking the password yet
+    $sql = "SELECT * FROM `users` WHERE `user_id`='$user_id' AND `user_status`='Active'";
     $result = mysqli_query($conn, $sql);
+    
     if ($result->num_rows > 0) {
+        $user = $result->fetch_assoc();
+        
+        // Now verify the password:
+        if (password_verify($password, $user['password'])) {
+            // Password is correct, start the session
+            session_start();
+            $_SESSION["status"] = "logged in";
+            $_SESSION["user_access"] = $user["user_access"];
+            $_SESSION["user_id"] = $user["user_id"];
+            $_SESSION["user_name"] = $user["employee_name"];
+            $_SESSION["department"] = $user["department"];
+            $_SESSION["designation"] = $user["designation"];
+            $_SESSION["joining_date"] = $user["joining_date"];
+            $_SESSION["user_image"] = $user["user_image"];
+            $_SESSION["user_status"] = $user["user_status"];
 
-        session_start();
-        $_SESSION["status"] = "logged in";
-
-        while ($row = $result->fetch_assoc()) {
-            array_push($array, "Login Successfull");
-            array_push($array, $row["user_access"]);
-            $_SESSION["user_access"] = $row["user_access"];
-            $_SESSION["user_id"] = $row["user_id"];
-            $_SESSION["user_name"] = $row["employee_name"];
-            $_SESSION["department"] = $row["department"];
-            $_SESSION["designation"] = $row["designation"];
-            $_SESSION["joining_date"] = $row["joining_date"];
-            $_SESSION["user_image"] = $row["user_image"];
-            $_SESSION["user_status"] = $row["user_status"];
+            $array = ["Login Successful", $user["user_access"]];
+        } else {
+            // Password is not correct
+            $array = ["Login Unsuccessful: Incorrect password."];
         }
     } else {
-        array_push($array, "Login Unsuccessfull");
+        $array = ["Login Unsuccessful: User not found or inactive."];
     }
+    
+    // Make sure to only echo JSON encoded data
     echo json_encode($array);
 }
+
+
 
 function add_employee()
 {
@@ -167,6 +178,7 @@ function add_employee()
             $designation = $_POST["designation"];
             $department = $_POST["department"];
             $email = $_POST["email"];
+            $off_email = $_POST["off_email"];
             $joining_date = $_POST["joining_date"];
             $qualification = $_POST["qualification"];
             $contact_number = $_POST["contact_number"];
@@ -174,7 +186,11 @@ function add_employee()
             $current_address = $_POST["current_address"];
             $date_of_birth = $_POST["date_of_birth"];
             $martial_status = $_POST["martial_status"];
+            $n_name = $_POST["n_name"];
+            $relation = $_POST["relation"];
+            $n_number = $_POST["n_number"];
             $password = $_POST["password"];
+            $h_password = password_hash($password, PASSWORD_DEFAULT);
             $user_access = $_POST["user_access"];
             $user_shift = $_POST["user_shift"];
             $user_status = $_POST["user_status"];
@@ -243,7 +259,7 @@ function add_employee()
             }
             $user_id .= $count;
 
-            $sql = "INSERT INTO `users`(`user_id`,`employee_name`, `department`, `gender`, `email`, `current_address`, `user_access`, `password`, `designation`, `joining_date`, `qualification`, `contact_number`, `cnic`, `date_of_birth`, `martial_status`,`user_image`,`user_shift`,`user_status`,`time_in`,`time_out`) VALUES('$user_id','$employee_name','$department','$gender','$email','$current_address','$user_access','$password','$designation','$joining_date','$qualification','$contact_number','$cnic','$date_of_birth','$martial_status', '$path','$user_shift','$user_status','$time_in','$time_out')";
+            $sql = "INSERT INTO `users`(`user_id`,`employee_name`, `department`, `gender`, `email`,`off_email`, `current_address`, `user_access`, `password`, `designation`, `joining_date`, `qualification`, `contact_number`, `cnic`, `date_of_birth`, `martial_status`,`n_name`,`relation`,`n_number`,`user_image`,`user_shift`,`user_status`,`time_in`,`time_out`) VALUES('$user_id','$employee_name','$department','$gender','$email','$off_email','$current_address','$user_access','$h_password','$designation','$joining_date','$qualification','$contact_number','$cnic','$date_of_birth','$martial_status','$n_name','$relation','$n_number','$path','$user_shift','$user_status','$time_in','$time_out')";
             if ($conn->query($sql) === true) {
                 echo "Employee Added Successfully";
             } else {
@@ -277,6 +293,7 @@ function edit_employee()
                 $designation = $_POST["designation"];
                 $department = $_POST["department"];
                 $email = $_POST["email"];
+                $off_email = $_POST["off_email"];
                 $joining_date = $_POST["joining_date"];
                 $qualification = $_POST["qualification"];
                 $contact_number = $_POST["contact_number"];
@@ -284,6 +301,9 @@ function edit_employee()
                 $current_address = $_POST["current_address"];
                 $date_of_birth = $_POST["date_of_birth"];
                 $martial_status = $_POST["martial_status"];
+                $n_name = $_POST["n_name"];
+                $relation = $_POST["relation"];
+                $n_number = $_POST["n_number"];
                 $password = $_POST["password"];
                 $user_access = $_POST["user_access"];
                 $user_status = $_POST["user_status"];
@@ -293,7 +313,7 @@ function edit_employee()
                 $time_out = date('h:i:sa', strtotime($time_out));
                 // $barcode = $_POST["barcode"];
 
-                $sql = "UPDATE `users` SET `employee_name`='$employee_name',`department`='$department',`gender`='$gender',`email`='$email',`current_address`='$current_address',`user_access`='$user_access',`password`='$password',`designation`='$designation',`joining_date`='$joining_date',`qualification`='$qualification',`contact_number`='$contact_number',`cnic`=' $cnic',`date_of_birth`='$date_of_birth',`martial_status`='$martial_status',`user_image`='$path',`time_in`='$time_in',`time_out`='$time_out',`user_status`='$user_status' WHERE `user_id`='$user_id'";
+                $sql = "UPDATE `users` SET `employee_name`='$employee_name',`department`='$department',`gender`='$gender',`email`='$email',`off_email`='$off_email',`current_address`='$current_address',`user_access`='$user_access',`password`='$password',`designation`='$designation',`joining_date`='$joining_date',`qualification`='$qualification',`contact_number`='$contact_number',`cnic`=' $cnic',`date_of_birth`='$date_of_birth',`martial_status`='$martial_status',`n_name`='$n_name',`relation`='$relation',`n_number`='$n_number',`user_image`='$path',`time_in`='$time_in',`time_out`='$time_out',`user_status`='$user_status' WHERE `user_id`='$user_id'";
                 if ($conn->query($sql) === true) {
                     echo "Employee details updated successfully";
                 } else {
@@ -310,6 +330,7 @@ function edit_employee()
         $designation = $_POST["designation"];
         $department = $_POST["department"];
         $email = $_POST["email"];
+        $off_email = $_POST["off_email"];
         $joining_date = $_POST["joining_date"];
         $qualification = $_POST["qualification"];
         $contact_number = $_POST["contact_number"];
@@ -317,6 +338,9 @@ function edit_employee()
         $current_address = $_POST["current_address"];
         $date_of_birth = $_POST["date_of_birth"];
         $martial_status = $_POST["martial_status"];
+        $n_name = $_POST["n_name"];
+        $relation = $_POST["relation"];
+        $n_number = $_POST["n_number"];
         $password = $_POST["password"];
         $user_access = $_POST["user_access"];
         $user_status = $_POST["user_status"];
@@ -326,7 +350,7 @@ function edit_employee()
         $time_out = date('h:i:sa', strtotime($time_out));
         // $barcode = $_POST["barcode"];
 
-        $sql = "UPDATE `users` SET `employee_name`='$employee_name',`department`='$department',`gender`='$gender',`email`='$email',`current_address`='$current_address',`user_access`='$user_access',`password`='$password',`designation`='$designation',`joining_date`='$joining_date',`qualification`='$qualification',`contact_number`='$contact_number',`cnic`=' $cnic',`date_of_birth`='$date_of_birth',`martial_status`='$martial_status',`time_in`='$time_in',`time_out`='$time_out',`user_status`='$user_status' WHERE `user_id`='$user_id'";
+        $sql = "UPDATE `users` SET `employee_name`='$employee_name',`department`='$department',`gender`='$gender',`email`='$email',`off_email`='$off_email',`current_address`='$current_address',`user_access`='$user_access',`password`='$password',`designation`='$designation',`joining_date`='$joining_date',`qualification`='$qualification',`contact_number`='$contact_number',`cnic`=' $cnic',`date_of_birth`='$date_of_birth',`martial_status`='$martial_status',`n_name`='$n_name',`relation`='$relation',`n_number`='$n_number',`time_in`='$time_in',`time_out`='$time_out',`user_status`='$user_status' WHERE `user_id`='$user_id'";
         if ($conn->query($sql) === true) {
             echo "Employee details updated successfully";
         } else {
@@ -859,23 +883,37 @@ function change_password()
     $old_password = $_POST['old_password'];
     $new_password = $_POST['new_password'];
     $user_id = $_POST['user_id'];
-    $sql0 = "SELECT * FROM `users` WHERE `user_id`='$user_id' AND `password`='$old_password'";
-    $result0 = mysqli_query($conn, $sql0);
+
+    // Prepare the SQL statement to prevent SQL injection
+    $sql0 = "SELECT `password` FROM `users` WHERE `user_id` = '$user_id' ";
+    $stmt = $conn->prepare($sql0);
+    $stmt->execute();
+    $result0 = $stmt->get_result();
+
     if ($result0->num_rows > 0) {
-        while ($row = $result0->fetch_assoc()) {
-            $old_password = $row['password'];
+        $row = $result0->fetch_assoc();
+        // Verify the old password with the hashed password in the database
+        if (password_verify($old_password, $row['password'])) {
+            // Hash the new password
+            $h_new_password = password_hash($new_password, PASSWORD_DEFAULT);
+
+            // Prepare the update statement to prevent SQL injection
+            $sql = "UPDATE `users` SET `password` = '$h_new_password' WHERE `user_id` = '$user_id' ";
+            $update_stmt = $conn->prepare($sql);
+            if ($update_stmt->execute()) {
+                echo "Password Changed Successfully";
+            } else {
+                // Corrected the error variable to $conn->error
+                echo "Error updating record: " . $conn->error;
+            }
+        } else {
+            echo "Old Password is Incorrect";
         }
     } else {
-        echo "Old Password is Incorrect";
-        return;
-    }
-    $sql = "Update `users` SET `password`='$new_password' WHERE `user_id`='$user_id'";
-    if ($conn->query($sql) == true) {
-        echo "Password Changed Successfully";
-    } else {
-        echo "Error: " . $sql . "<br>" . $db->error;
+        echo "User not found";
     }
 }
+
 
 function approve()
 {
@@ -1610,7 +1648,7 @@ function add_hours()
 
 
 
-    if ($activity == "Signed Out" && $ID != "ETPDJD001" && $ID != "ETPDJD003" && $ID != "ETPDJD004" && $ID != "ETPSSM005" && $ID == "$user_id") {
+    if ($activity == "Signed Out" && $ID != "ETPSSM005" && $ID == "$user_id") {
         if (strtotime($current_time) >= strtotime("00:00:00") && strtotime($current_time) < strtotime("12:00:00")) {
             date_default_timezone_set('Asia/karachi'); // Replace 'Your_Timezone' with your actual timezone
 
@@ -1701,7 +1739,7 @@ function add_hours()
             }
             $interval = $signin_time->diff($signout_time);
             $hours = $interval->format('%h:%i:%s');
-            $fixed_overtime = new DateInterval('PT6H'); // 6 hours
+            $fixed_overtime = new DateInterval('PT5H'); // 6 hours
             $overtime_time = new DateTime('00:00:00');
             $overtime_time->add($interval)->sub($fixed_overtime);
             $overtime = $overtime_time->format('%h:%i:%s');
@@ -1709,13 +1747,13 @@ function add_hours()
             $sql4 = "UPDATE `signin` SET `hours`='$hours' where `user_id`='$ID' AND `Date`='$date'";
             $result = mysqli_query($conn, $sql4);
 
-            if ($hours < "6:0:0" && $hours > "5:0:0") {
+            if ($hours < "5:0:0" && $hours > "4:0:0") {
                 $sql5 = "UPDATE `signin` SET `Signout_Status`='Early going' where `user_id`='$ID' AND `Date`='$date'";
                 $result = mysqli_query($conn, $sql5);
             } else if ($hours < "4:0:0" && $activity == "Signed Out") {
                 $sql6 = "UPDATE `signin` SET `Signout_Status`='Half day' where `user_id`='$ID' AND `Date`='$date'";
                 $result = mysqli_query($conn, $sql6);
-            } else if ($hours > "7:0:0" && $activity == "Signed Out") {
+            } else if ($hours > "6:0:0" && $activity == "Signed Out") {
                 $sql7 = "UPDATE `signin` SET `Signout_Status`='Over Time', `overtime`='$overtime2' where `user_id`='$ID' AND `Date`='$date'";
                 $result = mysqli_query($conn, $sql7);
             }
@@ -1738,7 +1776,7 @@ function add_hours()
             }
             $interval = $signin_time->diff($signout_time);
             $hours = $interval->format('%h:%i:%s');
-            $fixed_overtime = new DateInterval('PT6H'); // 6 hours
+            $fixed_overtime = new DateInterval('PT5H'); // 6 hours
             $overtime_time = new DateTime('00:00:00');
             $overtime_time->add($interval)->sub($fixed_overtime);
             $overtime = $overtime_time->format('%h:%i:%s');
@@ -1746,13 +1784,13 @@ function add_hours()
             $sql4 = "UPDATE `signin` SET `hours`='$hours' where `user_id`='$ID' AND `Date`='$date'";
             $result = mysqli_query($conn, $sql4);
 
-            if ($hours < "6:0:0" && $hours > "5:0:0") {
+            if ($hours < "5:0:0" && $hours > "4:0:0") {
                 $sql5 = "UPDATE `signin` SET `Signout_Status`='Early going' where `user_id`='$ID' AND `Date`='$date'";
                 $result = mysqli_query($conn, $sql5);
             } else if ($hours < "4:0:0" && $activity == "Signed Out") {
                 $sql6 = "UPDATE `signin` SET `Signout_Status`='Half day' where `user_id`='$ID' AND `Date`='$date'";
                 $result = mysqli_query($conn, $sql6);
-            } else if ($hours > "7:0:0" && $activity == "Signed Out") {
+            } else if ($hours > "6:0:0" && $activity == "Signed Out") {
                 $sql7 = "UPDATE `signin` SET `Signout_Status`='Over Time', `overtime`='$overtime2' where `user_id`='$ID' AND `Date`='$date'";
                 $result = mysqli_query($conn, $sql7);
             }
@@ -1957,4 +1995,41 @@ function PrintSetter2()
     } else {
         echo "Query error: " . mysqli_error($con);
     }
+}
+
+function resetPassword() 
+{
+    
+    
+    
+    include "db_connection.php";
+    
+    // die("no errors");
+  
+    $user_id = $_POST["user_id"];
+    $password = '12345678';
+    
+    // debug_r($password);
+    
+    // Hash the password
+    $hashedPassword = password_hash($password, PASSWORD_DEFAULT);
+
+    $sql = "UPDATE `users` SET `password` = '$hashedPassword' WHERE `user_id` = '$user_id' ";
+    
+    $result = mysqli_query($conn, $sql);
+
+    if ($result) {
+        echo "Absent record inserted successfully for employees who entered after 12 am.";
+    } else {
+        echo "Failed to insert absent record: " . mysqli_error($conn);
+    }
+
+    // // Assuming you have a PDO connection instance ($pdo)
+    // $stmt = $pdo->prepare($sql);
+    
+    // if ($stmt->execute()) {
+    //     echo "Password updated successfully.";
+    // } else {
+    //     echo "Failed to update password.";
+    // }
 }

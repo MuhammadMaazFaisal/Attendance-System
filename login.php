@@ -14,7 +14,10 @@ include "include/header.php";
     }
     .fxt-content-wrap {
 
-        background-image: url('img/login.gif') !important; 
+        background-image: url('img/login.jpg') !important; 
+        background-size: cover;
+        background-repeat: no-repeat;
+        background-attachment: fixed;
         
     }
     .fxt-btn-fill-black-border {
@@ -34,7 +37,7 @@ include "include/header.php";
         <div class="fxt-heading-content">
             <div class="fxt-inner-wrap fxt-transformX-R-50 fxt-transition-delay-3">
                 <div class="fxt-transformX-R-50 fxt-transition-delay-10">
-                    <a href="" class="fxt-logo"><img src="img/esolace logo.png" alt="Logo"></a>
+                    <a href="https://esolacetech.com" target="_blank" class="fxt-logo"><img src="img/footer-logo.png" alt="Logo"></a>
                 </div>
                 <div class="fxt-transformX-R-50 fxt-transition-delay-10">
                     <div class="fxt-middle-content">

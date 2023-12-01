@@ -136,6 +136,12 @@ if (isset($_SESSION['status']) && $_SESSION['user_access'] == 'Administrator') {
                                         <div class="row">
                                             <div class="col-md-4">
                                                 <div class="form-group">
+                                                    <label>Official Email</label>
+                                                    <input id=off_email name="off_email" type="email" class="form-control" placeholder="Email">
+                                                </div>
+                                            </div>
+                                            <div class="col-md-4">
+                                                <div class="form-group">
                                                     <label>Email</label>
                                                     <input id=email name=email type="email" class="form-control" placeholder="Email">
                                                 </div>
@@ -146,16 +152,15 @@ if (isset($_SESSION['status']) && $_SESSION['user_access'] == 'Administrator') {
                                                     <input id="contact_number" name="contact_number" type="text" class="form-control" placeholder="Contact Number">
                                                 </div>
                                             </div>
+                                        </div>
+                                        <!-- /row-->
+                                        <div class="row">
                                             <div class="col-md-4">
                                                 <div class="form-group">
                                                     <label>Qualification</label>
                                                     <input id="qualification" name="qualification" type="text" class="form-control" placeholder="Qualification">
                                                 </div>
                                             </div>
-
-                                        </div>
-                                        <!-- /row-->
-                                        <div class="row">
                                             <div class="col-md-4">
                                                 <div class="form-group">
                                                     <label>CNIC</label>
@@ -174,8 +179,6 @@ if (isset($_SESSION['status']) && $_SESSION['user_access'] == 'Administrator') {
                                                     <input id="current_address" name="current_address" type="text" class="form-control" placeholder="Current Address">
                                                 </div>
                                             </div>
-                                        </div>
-                                        <div class="row">
                                             <div class="col-md-4">
                                                 <div class="form-group">
                                                     <label>Martial Status</label>
@@ -189,6 +192,31 @@ if (isset($_SESSION['status']) && $_SESSION['user_access'] == 'Administrator') {
                                             </div>
 
                                         </div>
+                                        <div class="row mt-3">
+                                        <h1>Next Of Kin</h1>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-md-4">
+                                            <div class="form-group">
+                                                <label>Name</label>
+                                                <input id=n_name name="n_name" type="text" class="form-control" placeholder="Name" >
+                                            </div>
+                                        </div>
+                                        <div class="col-md-4">
+                                            <div class="form-group">
+                                                <label>Relation</label>
+                                                <input id=relation name="relation" type="text" class="form-control" placeholder="Relation">
+                                            </div>
+                                        </div>
+                                        <div class="col-md-4">
+                                            <div class="form-group">
+                                                <label>Number</label>
+                                                <input id="n_number" name="n_number" type="text" class="form-control" placeholder="Contact Number">
+                                            </div>
+                                        </div>
+                                        
+
+                                    </div>
                                         <div class="row mt-5">
                                             <h1>User Access</h1>
                                         </div>
@@ -206,8 +234,10 @@ if (isset($_SESSION['status']) && $_SESSION['user_access'] == 'Administrator') {
                                             </div>
                                             <div class="col-md-4">
                                                 <div class="form-group">
-                                                    <label>Password *</label>
-                                                    <input id="password" name="password" type="text" class="form-control" placeholder="Password" required>
+                                                    <label>Reset Password</label>
+                                                    <div>
+                                                    <button class="btn btn-outline-secondary" type="button" id="r_password" onclick="resetPassword($('#user_id').val())">Reset</button>                                                    
+                                                    </div>
                                                 </div>
                                             </div>
                                             <div class="col-md-4">
@@ -259,8 +289,8 @@ if (isset($_SESSION['status']) && $_SESSION['user_access'] == 'Administrator') {
                 </form>
             </div>
         </main>
-        <footer class="py-4 mt-auto" style="opacity: 50%;
-  background-color:black ;">
+        <footer class="py-4 mt-auto" style="opacity: 90%;
+  background-color:#20205a ;">
                     <div class="container-fluid">
                         <div class="d-flex align-items-center justify-content-between small">
                             <div class="text-muted">Copyright &copy;
@@ -288,6 +318,7 @@ if (isset($_SESSION['status']) && $_SESSION['user_access'] == 'Administrator') {
     // $(document).ready(function() {
     //     get_designation(department.value);
     // });
+    
 
     department.addEventListener('change', function() {
         $("#designation").empty();
@@ -341,6 +372,30 @@ if (isset($_SESSION['status']) && $_SESSION['user_access'] == 'Administrator') {
 //         barcodeInput.value = "";
 //     }
 // }
+
+ function resetPassword(user_id) {
+
+    // AJAX request to functions.php
+    $.ajax({
+        url: "include/functions.php",
+        type: 'POST',
+        data: { 
+             action: "resetPassword",
+             user_id: user_id
+            },
+        success: function(response) {
+            
+            alert('Password reset was successful');
+            window.location.reload();
+        },
+        error: function(xhr, status, error) {
+            // Handle errors
+          
+            console.error('Password reset failed:', error);
+        }
+    });
+}
+
 
 function PrintSetter(user_id) {
 

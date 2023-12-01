@@ -24,9 +24,9 @@ if (isset($_SESSION['status']) && $_SESSION['user_access'] == "Employee") {
                                 <div class="row">
                                     <div class="col-md-4">
                                         <div class="form-group">
-                                            <div class="form-group ml-5">
+                                            <div class="form-group ml-4">
 
-                                                <img id="profile_pic" src="" class="img-thumbnail" style="margin-left:70px; width: 200px; height:200px">
+                                                <img id="profile_pic" src="" class="img-thumbnail" style="margin-left:20px; width: 200px; height:300px">
                                             </div>
                                         </div>
                                     </div>
@@ -50,13 +50,13 @@ if (isset($_SESSION['status']) && $_SESSION['user_access'] == "Employee") {
                                         <div class="row">
                                             <div class="col-md-6">
                                                 <div class="form-group">
-                                                    <label>Designation *</label>
+                                                    <label>Designation</label>
                                                     <input id="designation" type="text" class="form-control" placeholder="Designation" readonly>
                                                 </div>
                                             </div>
                                             <div class="col-md-6">
                                                 <div class="form-group">
-                                                    <label>Department *</label>
+                                                    <label>Department</label>
                                                     <input id="department" type="text" class="form-control" placeholder="department" readonly>
                                                 </div>
                                             </div>
@@ -66,8 +66,8 @@ if (isset($_SESSION['status']) && $_SESSION['user_access'] == "Employee") {
 
                                             <div class="col-md-6">
                                                 <div class="form-group">
-                                                    <label>Email</label>
-                                                    <input id=email type="email" class="form-control" placeholder="Email" readonly>
+                                                    <label>Official Email</label>
+                                                    <input id=off_email type="email" class="form-control" placeholder="Email" readonly>
                                                 </div>
                                             </div>
                                             <div class="col-md-6">
@@ -108,6 +108,12 @@ if (isset($_SESSION['status']) && $_SESSION['user_access'] == "Employee") {
                                 <div class="row">
                                     <div class="col-md-4">
                                         <div class="form-group">
+                                            <label>Email</label>
+                                            <input id=email type="email" class="form-control" placeholder="Email" readonly>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-4">
+                                        <div class="form-group">
                                             <label>Current Address</label>
                                             <input id="current_address" type="text" class="form-control" placeholder="Current Address" readonly>
                                         </div>
@@ -132,7 +138,29 @@ if (isset($_SESSION['status']) && $_SESSION['user_access'] == "Employee") {
                                     </div>
                                 </div>
                                 <!-- /row-->
-
+                                <div class="row mt-5">
+                                    <h1>Next Of Kin</h1>
+                                </div>
+                                <div class="row">
+                                    <div class="col-md-4">
+                                        <div class="form-group">
+                                            <label>Name</label>
+                                            <input id="n_name" type="text" class="form-control" placeholder="Name" readonly>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-4">
+                                        <div class="form-group">
+                                            <label>Relation</label>
+                                            <input id="relation" type="text" class="form-control" placeholder="Relation" readonly>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-4">
+                                        <div class="form-group">
+                                            <label>Number</label>
+                                            <input id="n_number" type="text" class="form-control" placeholder="Number" readonly>
+                                        </div>
+                                    </div>
+                                </div>
 
                             </div>
                         </div>
@@ -140,8 +168,8 @@ if (isset($_SESSION['status']) && $_SESSION['user_access'] == "Employee") {
                 </div>
             </div>
         </main>
-        <footer class="py-4 mt-auto" style="opacity: 50%;
-  background-color:black ;">
+        <footer class="py-4 mt-auto" style="opacity: 90%;
+  background-color:#20205a ;">
                     <div class="container-fluid">
                         <div class="d-flex align-items-center justify-content-between small">
                             <div class="text-muted">Copyright &copy;

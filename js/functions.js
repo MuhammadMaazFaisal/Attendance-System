@@ -303,14 +303,19 @@ function get_leave_data(date) {
   });
 }
 
+// $("#user_info").on("shown.bs.modal", function (e) {
+//   view_user($(this).data('employee_id'));
+// });
+
 function view_user(employee_id) {
-  $("#user_info").on("shown.bs.modal", function (e) {
+
     let image = document.getElementById("image");
     let employee_name = document.getElementById("employee_name");
     let gender = document.getElementById("gender");
     let designation = document.getElementById("designation");
     let department = document.getElementById("v_department");
     let email = document.getElementById("email");
+    let off_email = document.getElementById("off_email");
     let joining_date = document.getElementById("joining_date");
     let qualification = document.getElementById("qualification");
     let contact_number = document.getElementById("contact_number");
@@ -318,6 +323,9 @@ function view_user(employee_id) {
     let current_address = document.getElementById("current_address");
     let date_of_birth = document.getElementById("date_of_birth");
     let martial_status = document.getElementById("martial_status");
+    let n_name = document.getElementById("n_name");
+    let relation = document.getElementById("relation");
+    let n_number = document.getElementById("n_number");
     let user_access = document.getElementById("user_access");
     let user_status = document.getElementById("user_status");
     let user_shift = document.getElementById("user_shift");
@@ -332,7 +340,6 @@ function view_user(employee_id) {
       },
       success: function (result) {
         let data = JSON.parse(result);
-        console.log(data);
         image.src = "Attendance System/" + data[0].user_image;
         user_id = data[0].user_id;
         employee_name.value = data[0].employee_name;
@@ -340,6 +347,7 @@ function view_user(employee_id) {
         designation.value = data[0].designation;
         department.value = data[0].department;
         email.value = data[0].email;
+        off_email.value = data[0].off_email;
         joining_date.value = data[0].joining_date;
         qualification.value = data[0].qualification;
         contact_number.value = data[0].contact_number;
@@ -347,6 +355,9 @@ function view_user(employee_id) {
         current_address.value = data[0].current_address;
         date_of_birth.value = data[0].date_of_birth;
         martial_status.value = data[0].martial_status;
+        n_name.value = data[0].n_name;
+        relation.value = data[0].relation;
+        n_number.value = data[0].n_number;
         user_access.value = data[0].user_access;
         user_status.value = data[0].user_status;
         user_shift.value = data[0].user_shift;
@@ -354,7 +365,6 @@ function view_user(employee_id) {
         time_out.value = data[0].time_out;
       },
     });
-  });
 }
 
 function PrintSetter(employee_id) {
@@ -366,7 +376,6 @@ function PrintSetter(employee_id) {
       employee_id: employee_id,
     },
     success: function (data) {
-      console.log(data);
       data = JSON.parse(data);
       let printWindow = window.open("", "_blank");
       // Generate slip content
@@ -487,7 +496,6 @@ function view_attendance(id) {
         },
 
         success: function (data) {
-          console.log(data);
 
           $("#table_body").html(data);
         },
@@ -502,9 +510,7 @@ function view_attendance(id) {
           year: year,
         },
         success: function (monthly_record) {
-          console.log(monthly_record);
           monthly_record = JSON.parse(monthly_record);
-          console.log(monthly_record);
           let official_days = document.getElementById("official_days");
           let presents = document.getElementById("presents");
           let absents = document.getElementById("absents");
@@ -980,38 +986,87 @@ function get_all_employees() {
       tbody.innerHTML = "";
       for (let i = 0; i < data.length; i++) {
         let tr = document.createElement("tr");
+    
+        // Creating table cells
         let td1 = document.createElement("td");
         let td2 = document.createElement("td");
         let td3 = document.createElement("td");
         let td4 = document.createElement("td");
         let td5 = document.createElement("td");
         let td6 = document.createElement("td");
+    
+        // Creating buttons
         let view_btn = document.createElement("button");
         let barcode = document.createElement("button");
+    
+        // Setting innerHTML for cells
         td1.innerHTML = data[i].user_id;
         td2.innerHTML = data[i].employee_name;
         td3.innerHTML = data[i].department;
         td5.innerHTML = data[i].user_status;
+    
+        // Setting properties for View button
         view_btn.innerHTML = "View";
-        view_btn.className = "btn btn-primary";
+        view_btn.className = "dropdown-item"; // Changed to dropdown item
         view_btn.setAttribute("data-toggle", "modal");
         view_btn.setAttribute("data-target", "#user_info");
         view_btn.setAttribute("id", data[i].user_id);
         view_btn.setAttribute("onclick", "view_user(this.id)");
-        td4.appendChild(view_btn);
+
+        // let edit_btn = document.createElement("button");
+        // edit_btn.innerHTML = "Edit Employee";
+        // edit_btn.className = "dropdown-item"; // Consistent styling with other dropdown items
+        // edit_btn.setAttribute("id", data[i].user_id);
+        // edit_btn.setAttribute("onclick", "location.href='edit_user.php?id=" + data[i].user_id + "'");
+    
+        // Setting properties for Generate Barcode button
         barcode.innerHTML = "Generate Barcode";
-        barcode.className = "btn btn-success";
+        barcode.className = "dropdown-item"; // Changed to dropdown item
         barcode.setAttribute("id", data[i].user_id);
         barcode.setAttribute("onclick", "PrintSetter(this.id)");
-        td6.appendChild(barcode);
+    
+        // Creating the dropdown container
+        let dropdown = document.createElement("div");
+        dropdown.className = "dropdown";
+    
+        // Creating the dropdown toggle button
+        let dropbtn = document.createElement("button");
+        dropbtn.className = "btn btn-primary dropdown-toggle";
+        dropbtn.setAttribute("type", "button");
+        dropbtn.setAttribute("id", "actionDropdown" + i);
+        dropbtn.setAttribute("data-toggle", "dropdown");
+        dropbtn.setAttribute("aria-haspopup", "true");
+        dropbtn.setAttribute("aria-expanded", "false");
+        dropbtn.innerHTML = "Action";
+    
+        // Creating the dropdown menu
+        let dropdownMenu = document.createElement("div");
+        dropdownMenu.className = "dropdown-menu";
+        dropdownMenu.setAttribute("aria-labelledby", "actionDropdown" + i);
+    
+        // Appending buttons to the dropdown menu
+        dropdownMenu.appendChild(view_btn);
+        dropdownMenu.appendChild(barcode);
+    
+        // Appending the toggle and menu to the dropdown
+        dropdown.appendChild(dropbtn);
+        dropdown.appendChild(dropdownMenu);
+    
+        // Appending the dropdown to the table cell
+        td6.appendChild(dropdown);
+    
+        // Appending cells to the row
         tr.appendChild(td1);
         tr.appendChild(td2);
         tr.appendChild(td3);
         tr.appendChild(td5);
         tr.appendChild(td4);
         tr.appendChild(td6);
+    
+        // Appending the row to the tbody
         tbody.appendChild(tr);
-      }
+    }
+    
     },
   });
 }
@@ -1024,7 +1079,6 @@ function load_edit_user_page() {
       action: "get_employee_data",
     },
     success: function (data) {
-      console.log(data);
       let employee_name = JSON.parse(data);
       for (let i = 0; i < employee_name.length; i++) {
         let option = document.createElement("option");
@@ -1060,6 +1114,7 @@ function edit_user_details(drop_down) {
   let designation = document.getElementById("designation");
   let department = document.getElementById("department");
   let email = document.getElementById("email");
+  let off_email = document.getElementById("off_email");
   let joining_date = document.getElementById("joining_date");
   let qualification = document.getElementById("qualification");
   let contact_number = document.getElementById("contact_number");
@@ -1067,7 +1122,9 @@ function edit_user_details(drop_down) {
   let current_address = document.getElementById("current_address");
   let date_of_birth = document.getElementById("date_of_birth");
   let martial_status = document.getElementById("martial_status");
-  let password = document.getElementById("password");
+  let n_name = document.getElementById("n_name");
+  let relation = document.getElementById("relation");
+  let n_number = document.getElementById("n_number");
   let user_access = document.getElementById("user_access");
   let user_status = document.getElementById("user_status");
   let user_shift = document.getElementById("user_shift");
@@ -1085,8 +1142,6 @@ function edit_user_details(drop_down) {
     },
     success: function (result) {
       let data = JSON.parse(result);
-      console.log(data);
-      // console.log("dfsf");
       employee_name.value = data[0].employee_name;
       user_id.value = data[0].user_id;
       gender.value = data[0].gender;
@@ -1094,6 +1149,7 @@ function edit_user_details(drop_down) {
       get_designation(department.value);
       designation.value = data[0].designation;
       email.value = data[0].email;
+      off_email.value = data[0].off_email;
       joining_date.value = data[0].joining_date;
       qualification.value = data[0].qualification;
       contact_number.value = data[0].contact_number;
@@ -1101,7 +1157,9 @@ function edit_user_details(drop_down) {
       current_address.value = data[0].current_address;
       date_of_birth.value = data[0].date_of_birth;
       martial_status.value = data[0].martial_status;
-      password.value = data[0].password;
+      n_name.value = data[0].n_name;
+      relation.value = data[0].relation;
+      n_number.value = data[0].n_number;
       user_access.value = data[0].user_access;
       user_status.value = data[0].user_status;
       user_shift.value = data[0].user_shift;
@@ -1162,7 +1220,7 @@ function login(user_id, password) {
     success: function (data) {
       data = JSON.parse(data);
 
-      if (data[0] == "Login Successfull") {
+      if (data[0] == "Login Successful") {
         if (data[1] == "Administrator") {
           window.location.href = "index.php";
         } else if (data[1] == "Employee") {
@@ -1187,7 +1245,6 @@ function calendar(user_id, month1, year1) {
       user_id: user_id,
     },
     success: function (data) {
-      console.log(data);
       data = JSON.parse(data);
       let td = document.getElementsByTagName("td");
       let count = 0;
@@ -1224,6 +1281,10 @@ function load_my_profile_page(emp) {
   let current_address = document.getElementById("current_address");
   let date_of_birth = document.getElementById("date_of_birth");
   let martial_status = document.getElementById("martial_status");
+  let off_email = document.getElementById("off_email");
+  let n_name = document.getElementById("n_name");
+  let relation = document.getElementById("relation");
+  let n_number = document.getElementById("n_number");
   // let password = document.getElementById("password");
   // let user_access = document.getElementById("user_access");
   $.ajax({
@@ -1234,9 +1295,7 @@ function load_my_profile_page(emp) {
       employee_id: emp,
     },
     success: function (data) {
-      console.log(data);
       data = JSON.parse(data);
-
       function replaceNull(value) {
         return value !== null ? value : "-";
       }
@@ -1248,6 +1307,7 @@ function load_my_profile_page(emp) {
       designation.value = replaceNull(data[0].designation);
       department.value = replaceNull(data[0].department);
       email.value = replaceNull(data[0].email);
+      off_email.value = replaceNull(data[0].off_email);
       joining_date.value = replaceNull(data[0].joining_date);
       qualification.value = replaceNull(data[0].qualification);
       contact_number.value = replaceNull(data[0].contact_number);
@@ -1255,6 +1315,9 @@ function load_my_profile_page(emp) {
       current_address.value = replaceNull(data[0].current_address);
       date_of_birth.value = replaceNull(data[0].date_of_birth);
       martial_status.value = replaceNull(data[0].martial_status);
+      n_name.value = replaceNull(data[0].n_name);
+      relation.value = replaceNull(data[0].relation);
+      n_number.value = replaceNull(data[0].n_number);
     },
   });
 }
@@ -1574,7 +1637,6 @@ function get_calendar_data(user_id, month1, year1) {
       year: year1,
     },
     success: function (data) {
-      console.log(data);
       $(".tbody").empty();
       let calendar = document.getElementById("calendar");
       calendar.classList.remove("invisible");
@@ -1636,7 +1698,6 @@ function get_attendance_data(user_id, month1, year1) {
       user_id: user_id,
     },
     success: function (data) {
-      console.log(data);
       data = JSON.parse(data);
       let array = [];
       let all_td = document.getElementsByTagName("td");
@@ -1789,13 +1850,12 @@ function get_all_alerts() {
       action: "get_all_alerts",
     },
     success: function (data) {
-      console.log(data);
       let alerts = JSON.parse(data);
       if (alerts.length == 0) {
         let tr = document.createElement("tr");
         let td = document.createElement("td");
         td.innerHTML = "No alerts found";
-        td.setAttribute("colspan", "3");
+        td.setAttribute("colspan", "4");
         tr.appendChild(td);
         tbody.appendChild(tr);
       } else {
@@ -1841,7 +1901,6 @@ function insert_alert(a_title, a_message) {
     },
     success: function (data) {
       data = JSON.parse(data);
-      console.log(data);
       if (data[0] == "success") {
         alert("Alert added successfully");
         location.reload();
@@ -1955,7 +2014,6 @@ function insert(id) {
     },
 
     success: function (data) {
-      console.log(data);
 
       data = jQuery.parseJSON(data);
       details = data;

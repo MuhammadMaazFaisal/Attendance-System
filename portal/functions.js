@@ -80,16 +80,13 @@ $(document).ready(function () {
   
 
   function modal(id) {
-    console.log(id);
     $('#exampleModalCenter').modal('show');
     $.ajax({
       type: "Post",
       url: "modal.php",
       data: { function: "modal", id: id },
       success: function (data) {
-        console.log(data);
         data = jQuery.parseJSON(data);
-        console.log(data);
         let emp_id = document.getElementById("emp_id");
         let emp_name = document.getElementById("emp_name");
         let emp_time = document.getElementById("emp_time");
