@@ -18,7 +18,7 @@ if (isset($_SESSION['status']) && $_SESSION['user_access'] == 'Administrator') {
                         <li class="breadcrumb-item active">Adjustments</li>
                     </ol>
                 </div>
-                <div class="col-12 col-md-3 my-3 border border-secondary rounded ml-auto">
+                <div class="col-12 col-md-4 my-3 border border-secondary rounded ml-auto">
                     <div class="row mx-2 mt-2">
                         <span class="font-weight-bold">Adjustments Applied: </span><span id="total_adjustments"
                             class="mx-2"></span>

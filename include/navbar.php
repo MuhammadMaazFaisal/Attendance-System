@@ -114,7 +114,7 @@
     </div>
 </div>
 
-
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 
 <script>
     let user_id = '<?php echo $_SESSION['user_id'] ?>';
@@ -167,7 +167,11 @@
             change_password(inputPasswordOld, inputPasswordNew, user_id);
 
         } else {
-            alert("New Password and Verify Password is not same");
+            Swal.fire({
+            title: "Passwords do not match",
+            text: "New Password and Verify Password is not same",
+            icon: "error",
+        });
         }
     });
     <?php

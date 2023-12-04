@@ -73,8 +73,9 @@ include "include/header.php";
 <?php
 include "include/footer.php";
 ?>
-
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 <script>
+    
     let submit = document.getElementById("submit");
     submit.addEventListener("click", function(e) {
         e.preventDefault();

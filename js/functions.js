@@ -1227,7 +1227,11 @@ function login(user_id, password) {
           window.location.href = "dashboard.php";
         }
       } else {
-        alert("Invalid Credentials");
+        Swal.fire({
+          title: "Invalid Credentials",
+          text: "Please enter correct credentials",
+          icon: "error",
+        });
       }
     },
   });
@@ -1947,14 +1951,22 @@ function change_password(inputPasswordOld, inputPasswordNew, user_id) {
           },
           success: function (res) {
             if (res == "logout") {
-              alert("Password Changed Successfully");
+              Swal.fire({
+                title: "Congratulations",
+                text: "Password Changed Successfully",
+                icon: "success",
+            });
               window.location.href = "login.php";
             }
           },
         });
       } else {
-        alert("Current Password is Wrong");
-      }
+        Swal.fire({
+          title: "Incorrect Password",
+          text: "Current Password is Wrong",
+          icon: "error",
+      });
+    }
     },
   });
 }
