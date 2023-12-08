@@ -111,6 +111,8 @@ include "include/footer.php";
 }
 ?>
 
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
 <script>
 let employee_id = "<?php echo $_SESSION['user_id']; ?>";
 
@@ -131,7 +133,11 @@ $("#alert_btn").click(function(e) {
     let a_message = document.querySelector("#a_message").value;
     let a_title = document.querySelector("#a_title").value;
     if (a_message == "" || a_title == "") {
-        alert("Please fill all the fields");
+        Swal.fire({
+          title: "Empth field(s)",
+          text: "Please fill all the fields",
+          icon: "error",
+      });
 
     } else {
         insert_alert(a_title, a_message);

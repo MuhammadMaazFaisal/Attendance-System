@@ -1906,10 +1906,18 @@ function insert_alert(a_title, a_message) {
     success: function (data) {
       data = JSON.parse(data);
       if (data[0] == "success") {
-        alert("Alert added successfully");
+        Swal.fire({
+          title: "Success",
+          text: "Alert added successfully",
+          icon: "success",
+      });
         location.reload();
       } else {
-        alert("Something went wrong, please try again later");
+        Swal.fire({
+          title: "Something went wrong",
+          text: "Please try again later",
+          icon: "error",
+      });
         location.reload();
       }
     },
@@ -1952,7 +1960,7 @@ function change_password(inputPasswordOld, inputPasswordNew, user_id) {
           success: function (res) {
             if (res == "logout") {
               Swal.fire({
-                title: "Congratulations",
+                title: "Success",
                 text: "Password Changed Successfully",
                 icon: "success",
             });
